@@ -1,4 +1,4 @@
-import 'package:chat_app/features/dashboard/data/model/search_model.dart';
+import 'package:beep/features/dashboard/data/model/search_model.dart';
 
 class SearchResponseEntity {
   String? status;

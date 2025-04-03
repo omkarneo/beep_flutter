@@ -1,16 +1,17 @@
 import 'dart:io';
 
-import 'package:chat_app/features/chat_screen/data/model/chat_data_response_model.dart';
-import 'package:chat_app/features/chat_screen/presentation/bloc/chat_send_bloc.dart';
-import 'package:chat_app/features/chat_screen/presentation/chat_list_bloc/chat_room_bloc.dart';
-import 'package:chat_app/features/chat_screen/presentation/status_bloc/status_bloc.dart';
-import 'package:chat_app/utils/constants/color_constants.dart';
-import 'package:chat_app/utils/constants/text_constants.dart';
-import 'package:chat_app/utils/helpers/shared_prefs.dart';
-import 'package:chat_app/utils/helpers/socket_helper.dart';
-import 'package:chat_app/utils/theme/text_theme.dart';
+import 'package:beep/features/chat_screen/data/model/chat_data_response_model.dart';
+import 'package:beep/features/chat_screen/presentation/bloc/chat_send_bloc.dart';
+import 'package:beep/features/chat_screen/presentation/chat_list_bloc/chat_room_bloc.dart';
+import 'package:beep/features/chat_screen/presentation/status_bloc/status_bloc.dart';
+import 'package:beep/utils/constants/color_constants.dart';
+import 'package:beep/utils/constants/text_constants.dart';
+import 'package:beep/utils/helpers/shared_prefs.dart';
+import 'package:beep/utils/helpers/socket_helper.dart';
+import 'package:beep/utils/theme/text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -138,14 +139,67 @@ class ChatTextFormWidget extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () async {
-                    final image = await ImagePicker()
-                        .pickImage(source: ImageSource.gallery);
+                    showModalBottomSheet(
+                      context: context,
+                      isDismissible: true,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10.sp),
+                          topRight: Radius.circular(10.sp),
+                        ),
+                      ),
+                      isScrollControlled: true,
+                      // barrierColor: transparent,
 
-                    if (image != null) {
-                      final imageTemp = File(image.path);
-                      BlocProvider.of<ChatSendBloc>(context)
-                          .add(ChatMediaEvent(chatmedia: imageTemp));
-                    }
+                      builder: (context) {
+                        return Container(
+                          padding: const EdgeInsets.all(16),
+
+                          width: double.infinity,
+                          // height: MediaQuery.sizeOf(context).height < 650
+                          //     ? MediaQuery.sizeOf(context).height * 0.45
+                          //     : MediaQuery.sizeOf(context).height * 0.365,
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                            color: secondaryBackground,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListTile(
+                                  leading: Icon(Icons.camera_alt),
+                                  title: Text("Camera")),
+                              ListTile(
+                                leading: Icon(Icons.photo),
+                                title: Text("Gallery"),
+                                onTap: () async {
+                                  final image = await ImagePicker()
+                                      .pickImage(source: ImageSource.gallery);
+
+                                  if (image != null) {
+                                    final imageTemp = File(image.path);
+                                    BlocProvider.of<ChatSendBloc>(context).add(
+                                        ChatMediaEvent(chatmedia: imageTemp));
+                                  }
+                                },
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                    // final image = await ImagePicker()
+                    //     .pickImage(source: ImageSource.gallery);
+
+                    // if (image != null) {
+                    //   final imageTemp = File(image.path);
+                    //   BlocProvider.of<ChatSendBloc>(context)
+                    //       .add(ChatMediaEvent(chatmedia: imageTemp));
+                    // }
                     //   // photoUpdated.value = imageTemp;
                     //   SocketHelper.socket.emit("sendMessage", {
                     //     "senderId": sharedPrefs.getid,

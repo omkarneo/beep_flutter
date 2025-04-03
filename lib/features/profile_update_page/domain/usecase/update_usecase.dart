@@ -1,5 +1,5 @@
-import 'package:chat_app/features/profile_update_page/domain/repo/update_repo.dart';
-import 'package:chat_app/utils/base_usecase.dart';
+import 'package:beep/features/profile_update_page/domain/repo/update_repo.dart';
+import 'package:beep/utils/base_usecase.dart';
 
 class ProfileUpdateUseCase extends UseCase {
   UpdateRepo updateRepo;

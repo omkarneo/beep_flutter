@@ -1,7 +1,7 @@
-import 'package:chat_app/utils/constants/color_constants.dart';
-import 'package:chat_app/utils/constants/image_constants.dart';
-import 'package:chat_app/utils/router/router.dart';
-import 'package:chat_app/utils/theme/text_theme.dart';
+import 'package:beep/utils/constants/color_constants.dart';
+import 'package:beep/utils/constants/image_constants.dart';
+import 'package:beep/utils/router/router.dart';
+import 'package:beep/utils/theme/text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';

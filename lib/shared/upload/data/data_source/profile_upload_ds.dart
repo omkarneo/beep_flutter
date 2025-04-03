@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:chat_app/di/di.dart';
-import 'package:chat_app/shared/upload/data/model/profile_upload_response_model.dart';
-import 'package:chat_app/utils/constants/url_constants.dart';
-import 'package:chat_app/utils/helpers/shared_prefs.dart';
-import 'package:chat_app/utils/network/base_network_request.dart';
-import 'package:chat_app/utils/network/connection.dart';
+import 'package:beep/di/di.dart';
+import 'package:beep/shared/upload/data/model/profile_upload_response_model.dart';
+import 'package:beep/utils/constants/url_constants.dart';
+import 'package:beep/utils/helpers/shared_prefs.dart';
+import 'package:beep/utils/network/base_network_request.dart';
+import 'package:beep/utils/network/connection.dart';
 import 'package:dio/dio.dart';
 import 'package:path/path.dart';
 

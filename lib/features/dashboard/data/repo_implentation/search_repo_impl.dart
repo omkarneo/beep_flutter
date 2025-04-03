@@ -1,6 +1,6 @@
-import 'package:chat_app/features/dashboard/data/datasource/search_ds.dart';
-import 'package:chat_app/features/dashboard/domain/entity/search_entity.dart';
-import 'package:chat_app/features/dashboard/domain/repo/search_repo.dart';
+import 'package:beep/features/dashboard/data/datasource/search_ds.dart';
+import 'package:beep/features/dashboard/domain/entity/search_entity.dart';
+import 'package:beep/features/dashboard/domain/repo/search_repo.dart';
 
 class SearchRepoImpl extends SearchRepo {
   final SearchDataSource searchDataSource;

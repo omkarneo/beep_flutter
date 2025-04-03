@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:chat_app/utils/constants/text_constants.dart';
-import 'package:chat_app/utils/constants/url_constants.dart';
-import 'package:chat_app/utils/errors/exceptions.dart';
+import 'package:beep/utils/constants/text_constants.dart';
+import 'package:beep/utils/constants/url_constants.dart';
+import 'package:beep/utils/errors/exceptions.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import 'connection.dart';

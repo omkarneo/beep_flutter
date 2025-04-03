@@ -1,6 +1,6 @@
-import 'package:chat_app/features/dashboard/data/datasource/create_room_ds.dart';
-import 'package:chat_app/features/dashboard/domain/entity/create_room_response_entity.dart';
-import 'package:chat_app/features/dashboard/domain/repo/create_room_repo.dart';
+import 'package:beep/features/dashboard/data/datasource/create_room_ds.dart';
+import 'package:beep/features/dashboard/domain/entity/create_room_response_entity.dart';
+import 'package:beep/features/dashboard/domain/repo/create_room_repo.dart';
 
 class CreateRepoImpl extends CreateRoomRepo {
   final CreateRoomDataSource createRoomDataSource;

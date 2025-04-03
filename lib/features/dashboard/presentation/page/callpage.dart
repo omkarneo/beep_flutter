@@ -1,7 +1,14 @@
-import 'package:chat_app/features/dashboard/presentation/data.dart';
-import 'package:chat_app/utils/constants/color_constants.dart';
-import 'package:chat_app/utils/theme/text_theme.dart';
+import 'package:beep/features/dashboard/data/model/status_reponse.dart';
+import 'package:beep/features/dashboard/presentation/bloc/dashboard_bloc.dart';
+import 'package:beep/features/dashboard/presentation/data.dart';
+import 'package:beep/utils/constants/color_constants.dart';
+import 'package:beep/utils/constants/text_constants.dart';
+import 'package:beep/utils/router/arguments/status_preview_argument.dart';
+import 'package:beep/utils/router/router.dart';
+import 'package:beep/utils/theme/text_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class CallsPage extends StatefulWidget {
   const CallsPage({super.key});
@@ -11,6 +18,11 @@ class CallsPage extends StatefulWidget {
 }
 
 class _CallsPageState extends State<CallsPage> {
+  void initState() {
+    super.initState();
+    BlocProvider.of<DashboardBloc>(context).add(DashboardCallEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -30,25 +42,42 @@ class _CallsPageState extends State<CallsPage> {
             height: 15,
           ),
           Expanded(
-            child: ListView.separated(
-              itemCount: profile.length,
-              separatorBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.only(
-                    top: 16, bottom: 16, left: 20, right: 20),
-                child: Container(
-                  width: MediaQuery.sizeOf(context).width,
-                  height: 1,
-                  color: Colors.grey.withOpacity(0.5),
-                ),
-              ),
-              itemBuilder: (context, index) {
-                if (index == profile)
-                  return CallTile(
-                    profile: profile,
-                    index: index,
+            child: BlocBuilder<DashboardBloc, DashboardState>(
+              builder: (context, state) {
+                if (state is DashboardCallState) {
+                  if (state.statusData.length == 0) {
+                    return Center(
+                      child: Text("No Status Avaiable"),
+                    );
+                  }
+                  return ListView.separated(
+                    itemCount: state.statusData.length,
+                    separatorBuilder: (context, index) => Padding(
+                      padding: const EdgeInsets.only(
+                          top: 16, bottom: 16, left: 20, right: 20),
+                      child: Container(
+                        width: MediaQuery.sizeOf(context).width,
+                        height: 1,
+                        color: Colors.grey.withOpacity(0.5),
+                      ),
+                    ),
+                    itemBuilder: (context, index) {
+                      return CallTile(
+                        statusdata: state.statusData,
+                        index: index,
+                      );
+                    },
                   );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
               },
             ),
+          ),
+          SizedBox(
+            height: 100,
           )
           // ChatWidget(profile: widget.profile),
         ],
@@ -58,16 +87,18 @@ class _CallsPageState extends State<CallsPage> {
 }
 
 class CallTile extends StatelessWidget {
-  const CallTile({super.key, required this.profile, required this.index});
+  const CallTile({super.key, required this.statusdata, required this.index});
 
-  final List profile;
+  final List<Status> statusdata;
   final int index;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // Navigator.pushNamed(context, AppRoutes.chatScreen);
+        Navigator.pushNamed(context, AppRoutes.statusPreviewScreen,
+            arguments:
+                StatusPreviewArgument(index: index, statusList: statusdata));
       },
       child: SizedBox(
         width: MediaQuery.sizeOf(context).width,
@@ -82,13 +113,42 @@ class CallTile extends StatelessWidget {
               width: 59,
               height: 59,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  image: DecorationImage(
-                      image: NetworkImage(
-                        profile[index]["image"],
-                      ),
-                      fit: BoxFit.fitHeight)),
+                borderRadius: BorderRadius.circular(40),
+                color: yellowprimary,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: Container(
+                  // width: 69,
+                  // height: 69,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          color: primaryBackground,
+                          strokeAlign: BorderSide.strokeAlignInside,
+                          width: 1),
+                      // color: yellowprimary,
+                      borderRadius: BorderRadius.circular(40),
+                      image: DecorationImage(
+                        fit: BoxFit.fitHeight,
+                        image: NetworkImage(
+                          statusdata[index].userPhotos ?? "",
+                        ),
+                      )),
+                  // child: Image.network(image),
+                ),
+              ),
             ),
+            // Container(
+            //   width: 59,
+            //   height: 59,
+            //   decoration: BoxDecoration(
+            //       borderRadius: BorderRadius.circular(30),
+            //       image: DecorationImage(
+            //           image: NetworkImage(
+            //             statusdata.userPhotos ?? "",
+            //           ),
+            //           fit: BoxFit.fitHeight)),
+            // ),
             SizedBox(
               width: 20,
             ),
@@ -98,33 +158,39 @@ class CallTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    profile[index]['name'],
+                    statusdata[index].username ?? "",
                     style: TextStyleHelper.boldStyle(fontSize: 15)
                         .copyWith(letterSpacing: -1),
                   ),
                   SizedBox(
                     height: 6,
                   ),
-                  Row(
-                    children: [
-                      Icon(
-                        profile[index]['call_type'] == "missing"
-                            ? Icons.call_missed
-                            : profile[index]['call_type'] == "outgoing"
-                                ? Icons.call_made
-                                : Icons.call_received,
-                        color: profile[index]['call_type'] == "missing"
-                            ? Colors.red
-                            : Colors.black,
-                      ),
-                      Text(profile[index]['call_time'],
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          softWrap: false,
-                          style: TextStyleHelper.mediumStyle(
-                              fontSize: 14, color: subtextColors)),
-                    ],
-                  ),
+                  Text(
+                    DateFormat('dd MMM, hh:mm a')
+                        .format(statusdata[index].timestamp ?? DateTime.now()),
+                    style: TextStyleHelper.mediumStyle(fontSize: 15)
+                        .copyWith(letterSpacing: -1),
+                  )
+                  // Row(
+                  //   children: [
+                  //     Icon(
+                  //       profile[index]['call_type'] == "missing"
+                  //           ? Icons.call_missed
+                  //           : profile[index]['call_type'] == "outgoing"
+                  //               ? Icons.call_made
+                  //               : Icons.call_received,
+                  //       color: profile[index]['call_type'] == "missing"
+                  //           ? Colors.red
+                  //           : Colors.black,
+                  //     ),
+                  //     Text(profile[index]['call_time'],
+                  //         overflow: TextOverflow.ellipsis,
+                  //         maxLines: 1,
+                  //         softWrap: false,
+                  //         style: TextStyleHelper.mediumStyle(
+                  //             fontSize: 14, color: subtextColors)),
+                  //   ],
+                  // ),
                 ],
               ),
             ),
@@ -162,23 +228,110 @@ class _CallTitleWidgetState extends State<CallTitleWidget> {
       width: MediaQuery.sizeOf(context).width,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
           children: [
-            Text(
-              "Calls",
-              style: TextStyleHelper.boldStyle(
-                      color: primaryTextColor, fontSize: 30)
-                  .copyWith(letterSpacing: -1),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Status",
+                  style: TextStyleHelper.boldStyle(
+                          color: primaryTextColor, fontSize: 30)
+                      .copyWith(letterSpacing: -1),
+                ),
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.more_vert,
+                      color: primaryTextColor,
+                    )),
+              ],
             ),
-            IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                  Icons.more_vert,
-                  color: primaryTextColor,
-                )),
+            BlocBuilder<DashboardBloc, DashboardState>(
+              builder: (context, state) {
+                if (state is DashboardCallState) {
+                  return InkWell(
+                    onTap: state.selfStatus == null
+                        ? null
+                        : () {
+                            Navigator.pushNamed(
+                                context, AppRoutes.statusPreviewScreen,
+                                arguments: StatusPreviewArgument(
+                                    index: 0, statusList: [state.selfStatus!]));
+                          },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: yellowprimary, width: 2)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  border: Border.all(
+                                      width: 3,
+                                      color: (state.selfStatus == null)
+                                          ? Colors.white
+                                          : yellowprimary),
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                          state.photo ?? emptyImage),
+                                      fit: BoxFit.fitHeight)),
+                              child: state.selfStatus != null
+                                  ? SizedBox.shrink()
+                                  : Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: Icon(
+                                        Icons.add_circle,
+                                        color: primaryTextColor,
+                                        size: 20,
+                                      ),
+                                    ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  state.username,
+                                  style: TextStyleHelper.mediumStyle(
+                                      color: primaryTextColor, fontSize: 15),
+                                ),
+                                SizedBox(
+                                  height: 6,
+                                ),
+                                Text(
+                                  state.selfStatus == null
+                                      ? "Create Status"
+                                      : DateFormat('dd MMM, hh:mm a')
+                                          .format(state.selfStatus!.timestamp!),
+                                  style: TextStyleHelper.mediumStyle(
+                                      color: yellowprimary, fontSize: 15),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: yellowprimary,
+                    ),
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),

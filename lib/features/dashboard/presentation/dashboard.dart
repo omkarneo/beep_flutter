@@ -1,16 +1,23 @@
-import 'package:chat_app/features/dashboard/presentation/data.dart';
-import 'package:chat_app/features/dashboard/presentation/page/callpage.dart';
-import 'package:chat_app/features/dashboard/presentation/page/chatListPage.dart';
-import 'package:chat_app/features/dashboard/presentation/page/profilepage.dart';
-import 'package:chat_app/features/dashboard/presentation/page/searchPage.dart';
-import 'package:chat_app/utils/constants/color_constants.dart';
-import 'package:chat_app/utils/theme/text_theme.dart';
+import 'package:camera/camera.dart';
+import 'package:beep/features/dashboard/presentation/data.dart';
+import 'package:beep/features/dashboard/presentation/page/callpage.dart';
+import 'package:beep/features/dashboard/presentation/page/chatListPage.dart';
+import 'package:beep/features/dashboard/presentation/page/profilepage.dart';
+import 'package:beep/features/dashboard/presentation/page/searchPage.dart';
+import 'package:beep/features/status_upload/presentation/status_upload.dart';
+import 'package:beep/utils/constants/color_constants.dart';
+import 'package:beep/utils/router/arguments/camera_page_argument.dart';
+import 'package:beep/utils/router/arguments/status_upload_page_arg.dart';
+import 'package:beep/utils/router/router.dart';
+import 'package:beep/utils/theme/text_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+  const DashboardScreen({super.key, required this.lastindex});
+  final int lastindex;
 
   @override
   State<DashboardScreen> createState() => _ChatListScreenStateState();
@@ -22,6 +29,8 @@ class _ChatListScreenStateState extends State<DashboardScreen> {
 
   @override
   void initState() {
+    tab.value = widget.lastindex;
+
     super.initState();
   }
 
@@ -194,17 +203,76 @@ class BottomMenu extends StatelessWidget {
                 ],
               ),
             ),
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                width: 39,
-                height: 39,
-                decoration: BoxDecoration(
-                    color: yellowprimary,
-                    borderRadius: BorderRadius.circular(30)),
-                child: Icon(
-                  Icons.add,
-                  weight: 9,
+            InkWell(
+              onTap: () async {
+                showModalBottomSheet(
+                  context: context,
+                  isDismissible: true,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.sp),
+                      topRight: Radius.circular(10.sp),
+                    ),
+                  ),
+                  isScrollControlled: true,
+                  // barrierColor: transparent,
+
+                  builder: (context) {
+                    return Container(
+                      padding: const EdgeInsets.all(16),
+
+                      width: double.infinity,
+                      // height: MediaQuery.sizeOf(context).height < 650
+                      //     ? MediaQuery.sizeOf(context).height * 0.45
+                      //     : MediaQuery.sizeOf(context).height * 0.365,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        color: secondaryBackground,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(16),
+                          topRight: Radius.circular(16),
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ListTile(
+                              onTap: () async {
+                                var cameras = await availableCameras();
+                                Navigator.pushNamed(
+                                    context, AppRoutes.cameraScreen,
+                                    arguments:
+                                        CameraPageArgument(cameras: cameras));
+                              },
+                              leading: Icon(Icons.image),
+                              title: Text("Image")),
+                          ListTile(
+                            leading: Icon(Icons.text_fields),
+                            title: Text("Text"),
+                            onTap: () async {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.statusuploadpage,
+                                  arguments: StatusUploadPageArg());
+                            },
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: 39,
+                  height: 39,
+                  decoration: BoxDecoration(
+                      color: yellowprimary,
+                      borderRadius: BorderRadius.circular(30)),
+                  child: Icon(
+                    Icons.add,
+                    weight: 9,
+                  ),
                 ),
               ),
             ),
@@ -223,7 +291,7 @@ class BottomMenu extends StatelessWidget {
                     height: 24,
                   ),
                   Text(
-                    "Calls",
+                    "Status",
                     style: index == 2
                         ? TextStyleHelper.semiBoldStyle(fontSize: 12)
                         : TextStyleHelper.semiBoldStyle(fontSize: 12),

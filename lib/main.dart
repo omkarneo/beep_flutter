@@ -1,29 +1,34 @@
 import 'dart:io';
 
-import 'package:chat_app/features/chat_screen/domain/usecase/chat_data_usecase.dart';
-import 'package:chat_app/features/chat_screen/presentation/bloc/chat_send_bloc.dart';
-import 'package:chat_app/features/chat_screen/presentation/chat_list_bloc/chat_room_bloc.dart';
-import 'package:chat_app/features/chat_screen/presentation/status_bloc/status_bloc.dart';
-import 'package:chat_app/features/dashboard/domain/usecase/create_room_usecase.dart';
-import 'package:chat_app/features/dashboard/domain/usecase/getroom_usecase.dart';
-import 'package:chat_app/features/dashboard/domain/usecase/getuser_usecase.dart';
-import 'package:chat_app/features/dashboard/domain/usecase/profile_usecase.dart';
-import 'package:chat_app/features/dashboard/presentation/bloc/dashboard_bloc.dart';
-import 'package:chat_app/features/login_screen/domain/usecase/entry_usecase.dart';
-import 'package:chat_app/features/profile_update_page/domain/usecase/update_usecase.dart';
-import 'package:chat_app/features/profile_update_page/presentation/bloc/update_profile_bloc.dart';
-import 'package:chat_app/shared/upload/domain/usecase/chat_photo_upload_usecase.dart';
-import 'package:chat_app/shared/upload/domain/usecase/profile_photo_upload_usecase.dart';
-import 'package:chat_app/utils/helpers/shared_prefs.dart';
-import 'package:chat_app/utils/helpers/socket_helper.dart';
+import 'package:beep/features/chat_screen/domain/usecase/chat_data_usecase.dart';
+import 'package:beep/features/chat_screen/presentation/bloc/chat_send_bloc.dart';
+import 'package:beep/features/chat_screen/presentation/chat_list_bloc/chat_room_bloc.dart';
+import 'package:beep/features/chat_screen/presentation/status_bloc/status_bloc.dart';
+import 'package:beep/features/dashboard/domain/usecase/create_room_usecase.dart';
+import 'package:beep/features/dashboard/domain/usecase/getroom_usecase.dart';
+import 'package:beep/features/dashboard/domain/usecase/getuser_usecase.dart';
+import 'package:beep/features/dashboard/domain/usecase/profile_usecase.dart';
+import 'package:beep/features/dashboard/domain/usecase/self_status_usecase.dart';
+import 'package:beep/features/dashboard/domain/usecase/status_get_usecase.dart';
+import 'package:beep/features/dashboard/presentation/bloc/dashboard_bloc.dart';
+import 'package:beep/features/login_screen/domain/usecase/entry_usecase.dart';
+import 'package:beep/features/profile_update_page/domain/usecase/update_usecase.dart';
+import 'package:beep/features/profile_update_page/presentation/bloc/update_profile_bloc.dart';
+import 'package:beep/features/status_upload/domain/usecase/status_create_usecase.dart';
+import 'package:beep/features/status_upload/domain/usecase/status_upload_usecase.dart';
+import 'package:beep/features/status_upload/presentation/bloc/status_upload_bloc.dart';
+import 'package:beep/shared/upload/domain/usecase/chat_photo_upload_usecase.dart';
+import 'package:beep/shared/upload/domain/usecase/profile_photo_upload_usecase.dart';
+import 'package:beep/utils/helpers/shared_prefs.dart';
+import 'package:beep/utils/helpers/socket_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chat_app/di/di.dart';
-import 'package:chat_app/features/login_screen/domain/usecase/login_usecase.dart';
-import 'package:chat_app/features/login_screen/presentation/bloc/login_screen_bloc.dart';
-import 'package:chat_app/utils/router/router.dart';
-import 'package:chat_app/utils/theme/app_theme.dart';
+import 'package:beep/di/di.dart';
+import 'package:beep/features/login_screen/domain/usecase/login_usecase.dart';
+import 'package:beep/features/login_screen/presentation/bloc/login_screen_bloc.dart';
+import 'package:beep/utils/router/router.dart';
+import 'package:beep/utils/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,10 +68,12 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => DashboardBloc(
+              statusGetUsecase: locator<StatusGetUsecase>(),
               createRoomUsecase: locator<CreateRoomUsecase>(),
               getProfileData: locator<GetProfileData>(),
               getRoomDataUseCase: locator<GetRoomDataUseCase>(),
-              getUserData: locator<GetUserData>()),
+              getUserData: locator<GetUserData>(),
+              selfStatusUsecase: locator<SelfStatusUsecase>()),
         ),
         BlocProvider(
           create: (context) =>
@@ -79,6 +86,12 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (context) => ChatSendBloc(
               chatPhotoUploadUsecase: locator<ChatPhotoUploadUsecase>()),
+        ),
+        BlocProvider(
+          create: (context) => StatusUploadBloc(
+            statusCreateUsecase: locator<StatusCreateUsecase>(),
+            statusUploadUsecase: locator<StatusUploadUsecase>(),
+          ),
         ),
       ],
       child: ScreenUtilInit(

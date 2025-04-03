@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:chat_app/features/chat_screen/domain/entity/chat_data_response_entity.dart';
-import 'package:chat_app/features/chat_screen/domain/usecase/chat_data_usecase.dart';
-import 'package:chat_app/utils/helpers/socket_helper.dart';
+import 'package:beep/features/chat_screen/domain/entity/chat_data_response_entity.dart';
+import 'package:beep/features/chat_screen/domain/usecase/chat_data_usecase.dart';
+import 'package:beep/utils/helpers/socket_helper.dart';
 import 'package:equatable/equatable.dart';
 
 part 'status_event.dart';

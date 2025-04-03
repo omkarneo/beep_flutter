@@ -1,4 +1,4 @@
-import 'package:chat_app/features/dashboard/data/model/room_model.dart';
+import 'package:beep/features/dashboard/data/model/room_model.dart';
 
 class RoomResponseEntity {
   String? status;

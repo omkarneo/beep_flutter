@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:chat_app/utils/constants/color_constants.dart';
+import 'package:beep/utils/constants/color_constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {

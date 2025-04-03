@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:chat_app/features/profile_update_page/domain/entity/update_response_entity.dart';
+import 'package:beep/features/profile_update_page/domain/entity/update_response_entity.dart';
 
 class ProfileUpdateResponseModel extends ProfileUpdateResponseEntity {
   String? status;

@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:chat_app/features/profile_update_page/presentation/bloc/update_profile_bloc.dart';
-import 'package:chat_app/utils/constants/color_constants.dart';
-import 'package:chat_app/utils/helpers/shared_prefs.dart';
-import 'package:chat_app/utils/router/router.dart';
-import 'package:chat_app/utils/theme/text_theme.dart';
+import 'package:beep/features/profile_update_page/presentation/bloc/update_profile_bloc.dart';
+import 'package:beep/utils/constants/color_constants.dart';
+import 'package:beep/utils/helpers/shared_prefs.dart';
+import 'package:beep/utils/router/router.dart';
+import 'package:beep/utils/theme/text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,6 +38,7 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
             Navigator.pushNamedAndRemoveUntil(
               context,
               AppRoutes.dashboardScreen,
+              arguments: 3,
               (route) => false,
             );
           } else if (state is UpdateProfileErrorState) {

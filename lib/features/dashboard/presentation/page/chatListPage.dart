@@ -1,18 +1,19 @@
 import 'dart:io';
 
-import 'package:chat_app/features/chat_screen/presentation/chat_list_bloc/chat_room_bloc.dart';
-import 'package:chat_app/features/chat_screen/presentation/status_bloc/status_bloc.dart';
-import 'package:chat_app/features/dashboard/data/model/room_model.dart';
-import 'package:chat_app/features/dashboard/presentation/bloc/dashboard_bloc.dart';
-import 'package:chat_app/utils/constants/color_constants.dart';
-import 'package:chat_app/utils/helpers/shared_prefs.dart';
-import 'package:chat_app/utils/helpers/socket_helper.dart';
-import 'package:chat_app/utils/router/arguments/chatscreen_argymenjt.dart';
-import 'package:chat_app/utils/router/router.dart';
-import 'package:chat_app/utils/theme/text_theme.dart';
+import 'package:beep/features/chat_screen/presentation/chat_list_bloc/chat_room_bloc.dart';
+import 'package:beep/features/chat_screen/presentation/status_bloc/status_bloc.dart';
+import 'package:beep/features/dashboard/data/model/room_model.dart';
+import 'package:beep/features/dashboard/presentation/bloc/dashboard_bloc.dart';
+import 'package:beep/utils/constants/color_constants.dart';
+import 'package:beep/utils/helpers/shared_prefs.dart';
+import 'package:beep/utils/helpers/socket_helper.dart';
+import 'package:beep/utils/router/arguments/chatscreen_argymenjt.dart';
+import 'package:beep/utils/router/router.dart';
+import 'package:beep/utils/theme/text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class ChatListPage extends StatefulWidget {
@@ -108,7 +109,9 @@ class ChatWidget extends StatelessWidget {
             }
           } else {
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: yellowprimary,
+              ),
             );
           }
         },
@@ -195,11 +198,12 @@ class ChatTile extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  chatTileData.lastchatTime ?? "",
-                  style: TextStyleHelper.mediumStyle(
-                      fontSize: 12, color: subtextColors),
-                ),
+                // Text(
+                // DateFormat('dd MMM, hh:mm a')
+                //     .format(DateTime.parse(chatTileData.lastchatTime ?? "")),
+                //   style: TextStyleHelper.mediumStyle(
+                //       fontSize: 12, color: subtextColors),
+                // ),
                 SizedBox(
                   height: 6,
                 ),
@@ -284,32 +288,57 @@ class StatusGridWidget extends StatelessWidget {
       child: SizedBox(
         width: MediaQuery.sizeOf(context).width,
         height: 130,
-        child: ListView.separated(
-          separatorBuilder: (context, index) => SizedBox(
-            width: 14,
-          ),
-          scrollDirection: Axis.horizontal,
-          itemCount: profile.length,
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return Row(
-                children: [
-                  SizedBox(
-                    width: 20,
-                  ),
-                  AddStoryWidget(),
-                  SizedBox(
-                    width: 14,
-                  ),
-                  StoryWidget(
-                      image: profile[index]['image'],
-                      name: profile[index]['name'])
-                ],
+        child: BlocBuilder<DashboardBloc, DashboardState>(
+          builder: (context, state) {
+            if (state is DashboardChatState) {
+              if (state.statusData!.length == 0) {
+                return Row(
+                  children: [
+                    SizedBox(
+                      width: 20,
+                    ),
+                    AddStoryWidget(),
+                    SizedBox(
+                      width: 14,
+                    ),
+                  ],
+                );
+              }
+              return ListView.separated(
+                separatorBuilder: (context, index) => SizedBox(
+                  width: 14,
+                ),
+                scrollDirection: Axis.horizontal,
+                itemCount: state.statusData?.length ?? 0,
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return Row(
+                      children: [
+                        SizedBox(
+                          width: 20,
+                        ),
+                        AddStoryWidget(),
+                        SizedBox(
+                          width: 14,
+                        ),
+                        StoryWidget(
+                            image: state.statusData?[index].userPhotos ?? "",
+                            name: state.statusData?[index].username ?? "")
+                      ],
+                    );
+                  } else {
+                    return StoryWidget(
+                        image: state.statusData?[index].userPhotos ?? "",
+                        name: state.statusData?[index].username ?? "");
+                  }
+                },
               );
-            } else {
-              return StoryWidget(
-                  image: profile[index]['image'], name: profile[index]['name']);
             }
+            return Center(
+              child: CircularProgressIndicator(
+                color: yellowprimary,
+              ),
+            );
           },
         ),
       ),

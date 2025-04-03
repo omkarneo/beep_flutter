@@ -1,14 +1,17 @@
 import 'dart:isolate';
 
 import 'package:bloc/bloc.dart';
-import 'package:chat_app/features/dashboard/data/model/room_model.dart';
-import 'package:chat_app/features/dashboard/data/model/search_model.dart';
-import 'package:chat_app/features/dashboard/domain/entity/create_room_response_entity.dart';
-import 'package:chat_app/features/dashboard/domain/entity/profile_entity.dart';
-import 'package:chat_app/features/dashboard/domain/usecase/create_room_usecase.dart';
-import 'package:chat_app/features/dashboard/domain/usecase/getroom_usecase.dart';
-import 'package:chat_app/features/dashboard/domain/usecase/getuser_usecase.dart';
-import 'package:chat_app/features/dashboard/domain/usecase/profile_usecase.dart';
+import 'package:beep/features/dashboard/data/model/room_model.dart';
+import 'package:beep/features/dashboard/data/model/search_model.dart';
+import 'package:beep/features/dashboard/data/model/status_reponse.dart';
+import 'package:beep/features/dashboard/domain/entity/create_room_response_entity.dart';
+import 'package:beep/features/dashboard/domain/entity/profile_entity.dart';
+import 'package:beep/features/dashboard/domain/usecase/create_room_usecase.dart';
+import 'package:beep/features/dashboard/domain/usecase/getroom_usecase.dart';
+import 'package:beep/features/dashboard/domain/usecase/getuser_usecase.dart';
+import 'package:beep/features/dashboard/domain/usecase/profile_usecase.dart';
+import 'package:beep/features/dashboard/domain/usecase/self_status_usecase.dart';
+import 'package:beep/features/dashboard/domain/usecase/status_get_usecase.dart';
 import 'package:equatable/equatable.dart';
 
 part 'dashboard_event.dart';
@@ -19,11 +22,16 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final GetProfileData getProfileData;
   final GetUserData getUserData;
   final CreateRoomUsecase createRoomUsecase;
+  final StatusGetUsecase statusGetUsecase;
+  final SelfStatusUsecase selfStatusUsecase;
+
   DashboardBloc(
       {required this.getProfileData,
       required this.getRoomDataUseCase,
       required this.getUserData,
-      required this.createRoomUsecase})
+      required this.createRoomUsecase,
+      required this.statusGetUsecase,
+      required this.selfStatusUsecase})
       : super(DashboardInitial()) {
     on<DashboardProfileEvent>((event, emit) async {
       try {
@@ -31,10 +39,33 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         emit(DashboardProfileState(profileResponseEntity: response));
       } catch (err) {}
     });
+    on<DashboardCallEvent>(
+      (event, emit) async {
+        try {
+          var statusresponse = await statusGetUsecase.call(params: "");
+          var selfstatusresponse = await selfStatusUsecase.call(params: "");
+          if (selfstatusresponse.message == "no status found") {
+            emit(DashboardCallState(
+                photo: selfstatusresponse.data!.userphotos!,
+                username: selfstatusresponse.data!.username!,
+                statusData: statusresponse.data!,
+                selfStatus: null));
+          } else {
+            emit(DashboardCallState(
+                photo: selfstatusresponse.data!.userphotos!,
+                username: selfstatusresponse.data!.username!,
+                statusData: statusresponse.data!,
+                selfStatus: selfstatusresponse.data!.statusdata));
+          }
+        } catch (err) {}
+      },
+    );
     on<DashboardChatEvent>((event, emit) async {
       try {
         var response = await getRoomDataUseCase.call(params: "");
-        emit(DashboardChatState(roomData: response.data));
+        var statusresponse = await statusGetUsecase.call(params: "");
+        emit(DashboardChatState(
+            roomData: response.data, statusData: statusresponse.data));
       } catch (err) {}
     });
     on<DashboardSearchEvent>((event, emit) async {

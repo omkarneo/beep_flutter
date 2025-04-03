@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:chat_app/features/login_screen/domain/entity/response_entry_entity.dart';
+import 'package:beep/features/login_screen/domain/entity/response_entry_entity.dart';
 
 class EntryResponseModel extends EntryResponseEntity {
   final String? status;

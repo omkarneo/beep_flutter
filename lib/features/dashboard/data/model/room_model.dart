@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:chat_app/features/dashboard/domain/entity/room_entity.dart';
-import 'package:chat_app/utils/constants/url_constants.dart';
+import 'package:beep/features/dashboard/domain/entity/room_entity.dart';
+import 'package:beep/utils/constants/url_constants.dart';
 
 class RoomResponseModel extends RoomResponseEntity {
   String? status;

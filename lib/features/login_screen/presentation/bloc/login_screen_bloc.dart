@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:chat_app/features/login_screen/domain/entity/entry_request_entity.dart';
-import 'package:chat_app/features/login_screen/domain/entity/otp_response_entity.dart';
-import 'package:chat_app/features/login_screen/domain/entity/response_entry_entity.dart';
-import 'package:chat_app/features/login_screen/domain/usecase/entry_usecase.dart';
-import 'package:chat_app/utils/errors/exceptions.dart';
-import 'package:chat_app/utils/helpers/shared_prefs.dart';
+import 'package:beep/features/login_screen/domain/entity/entry_request_entity.dart';
+import 'package:beep/features/login_screen/domain/entity/otp_response_entity.dart';
+import 'package:beep/features/login_screen/domain/entity/response_entry_entity.dart';
+import 'package:beep/features/login_screen/domain/usecase/entry_usecase.dart';
+import 'package:beep/utils/errors/exceptions.dart';
+import 'package:beep/utils/helpers/shared_prefs.dart';
 import 'package:equatable/equatable.dart';
 
 part 'login_screen_event.dart';

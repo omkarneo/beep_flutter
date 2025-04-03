@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:chat_app/features/dashboard/domain/entity/create_room_response_entity.dart';
+import 'package:beep/features/dashboard/domain/entity/create_room_response_entity.dart';
 
 class CreateRoomResponseModel extends CreateRoomResponseEntity {
   String? status;

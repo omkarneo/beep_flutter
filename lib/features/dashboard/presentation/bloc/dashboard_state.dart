@@ -9,7 +9,19 @@ sealed class DashboardState extends Equatable {
 
 final class DashboardInitial extends DashboardState {}
 
-class DashboardCallState extends DashboardState {}
+class DashboardCallState extends DashboardState {
+  final List<Status> statusData;
+  final Status? selfStatus;
+  final String username;
+  final String photo;
+  const DashboardCallState(
+      {required this.statusData,
+      this.selfStatus,
+      required this.photo,
+      required this.username});
+  @override
+  List<Object> get props => [statusData];
+}
 
 class DashboardSearchState extends DashboardState {
   final List<UserData>? data;
@@ -38,9 +50,10 @@ class DashboardProfileState extends DashboardState {
 }
 
 class DashboardChatState extends DashboardState {
+  final List<Status>? statusData;
   final List<RoomData>? roomData;
 
-  DashboardChatState({required this.roomData});
+  DashboardChatState({required this.roomData, this.statusData});
   @override
   List<Object> get props => [roomData!];
 }

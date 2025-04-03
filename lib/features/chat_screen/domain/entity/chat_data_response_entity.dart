@@ -1,4 +1,4 @@
-import 'package:chat_app/features/chat_screen/data/model/chat_data_response_model.dart';
+import 'package:beep/features/chat_screen/data/model/chat_data_response_model.dart';
 
 class ChatDataResponseEntity {
   String? status;

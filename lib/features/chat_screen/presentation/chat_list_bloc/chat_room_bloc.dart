@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:chat_app/features/chat_screen/data/model/chat_data_response_model.dart';
-import 'package:chat_app/features/chat_screen/domain/entity/chat_data_response_entity.dart';
-import 'package:chat_app/features/chat_screen/domain/usecase/chat_data_usecase.dart';
-import 'package:chat_app/utils/constants/url_constants.dart';
-import 'package:chat_app/utils/helpers/socket_helper.dart';
+import 'package:beep/features/chat_screen/data/model/chat_data_response_model.dart';
+import 'package:beep/features/chat_screen/domain/entity/chat_data_response_entity.dart';
+import 'package:beep/features/chat_screen/domain/usecase/chat_data_usecase.dart';
+import 'package:beep/utils/constants/url_constants.dart';
+import 'package:beep/utils/helpers/socket_helper.dart';
 import 'package:equatable/equatable.dart';
 
 part 'chat_room_event.dart';

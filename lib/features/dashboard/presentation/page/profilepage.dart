@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:chat_app/features/dashboard/presentation/bloc/dashboard_bloc.dart';
-import 'package:chat_app/utils/constants/color_constants.dart';
-import 'package:chat_app/utils/constants/text_constants.dart';
-import 'package:chat_app/utils/helpers/shared_prefs.dart';
-import 'package:chat_app/utils/helpers/socket_helper.dart';
-import 'package:chat_app/utils/router/router.dart';
-import 'package:chat_app/utils/theme/text_theme.dart';
+import 'package:beep/features/dashboard/presentation/bloc/dashboard_bloc.dart';
+import 'package:beep/utils/constants/color_constants.dart';
+import 'package:beep/utils/constants/text_constants.dart';
+import 'package:beep/utils/helpers/shared_prefs.dart';
+import 'package:beep/utils/helpers/socket_helper.dart';
+import 'package:beep/utils/router/router.dart';
+import 'package:beep/utils/theme/text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

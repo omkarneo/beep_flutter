@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:chat_app/features/profile_update_page/domain/entity/update_request_entity.dart';
+import 'package:beep/features/profile_update_page/domain/entity/update_request_entity.dart';
 
 class ProfileUpdateRequesModel extends ProfileUpdateRequestEntity {
   String? firstName;

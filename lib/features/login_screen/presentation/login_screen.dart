@@ -1,10 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:chat_app/features/login_screen/presentation/bloc/login_screen_bloc.dart';
-import 'package:chat_app/utils/constants/color_constants.dart';
-import 'package:chat_app/utils/helpers/shared_prefs.dart';
-import 'package:chat_app/utils/router/router.dart';
-import 'package:chat_app/utils/theme/text_theme.dart';
+import 'package:beep/features/login_screen/presentation/bloc/login_screen_bloc.dart';
+import 'package:beep/utils/constants/color_constants.dart';
+import 'package:beep/utils/helpers/shared_prefs.dart';
+import 'package:beep/utils/router/router.dart';
+import 'package:beep/utils/theme/text_theme.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -97,6 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.pushNamedAndRemoveUntil(
                               context,
                               AppRoutes.dashboardScreen,
+                              arguments: 0,
                               (route) => false,
                             );
                           }

@@ -1,8 +1,8 @@
-import 'package:chat_app/features/profile_update_page/data/data_source/update_datasource.dart';
-import 'package:chat_app/features/profile_update_page/data/model/update_request_model.dart';
-import 'package:chat_app/features/profile_update_page/domain/entity/update_request_entity.dart';
-import 'package:chat_app/features/profile_update_page/domain/entity/update_response_entity.dart';
-import 'package:chat_app/features/profile_update_page/domain/repo/update_repo.dart';
+import 'package:beep/features/profile_update_page/data/data_source/update_datasource.dart';
+import 'package:beep/features/profile_update_page/data/model/update_request_model.dart';
+import 'package:beep/features/profile_update_page/domain/entity/update_request_entity.dart';
+import 'package:beep/features/profile_update_page/domain/entity/update_response_entity.dart';
+import 'package:beep/features/profile_update_page/domain/repo/update_repo.dart';
 
 class UpdateRepoImpl extends UpdateRepo {
   final ProfileDataSource profileDataSource;

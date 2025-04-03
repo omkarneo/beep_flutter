@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:chat_app/shared/upload/domain/entity/profile_upload_response_entity.dart';
+import 'package:beep/shared/upload/domain/entity/profile_upload_response_entity.dart';
 
 class ProfileUploadModel extends ProfileUploadEntity {
   String? message;

@@ -1,5 +1,5 @@
-import 'package:chat_app/features/chat_screen/presentation/status_bloc/status_bloc.dart';
-import 'package:chat_app/utils/constants/url_constants.dart';
+import 'package:beep/features/chat_screen/presentation/status_bloc/status_bloc.dart';
+import 'package:beep/utils/constants/url_constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 

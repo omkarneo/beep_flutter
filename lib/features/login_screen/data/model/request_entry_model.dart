@@ -1,4 +1,4 @@
-import 'package:chat_app/features/login_screen/domain/entity/entry_request_entity.dart';
+import 'package:beep/features/login_screen/domain/entity/entry_request_entity.dart';
 
 class EntryRequestModel extends EntryRequestEntity {
   final String phonenumber;

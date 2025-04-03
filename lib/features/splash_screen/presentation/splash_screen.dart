@@ -1,9 +1,9 @@
-import 'package:chat_app/utils/helpers/shared_prefs.dart';
-import 'package:chat_app/utils/helpers/socket_helper.dart';
-import 'package:chat_app/utils/router/router.dart';
+import 'package:beep/utils/helpers/shared_prefs.dart';
+import 'package:beep/utils/helpers/socket_helper.dart';
+import 'package:beep/utils/router/router.dart';
 import 'package:flutter/material.dart';
-import 'package:chat_app/utils/constants/color_constants.dart';
-import 'package:chat_app/utils/theme/text_theme.dart';
+import 'package:beep/utils/constants/color_constants.dart';
+import 'package:beep/utils/theme/text_theme.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -32,6 +32,7 @@ class SplashScreen extends StatelessWidget {
           await Navigator.pushNamedAndRemoveUntil(
             context,
             AppRoutes.dashboardScreen,
+            arguments: 0,
             (route) => false,
           );
         }
