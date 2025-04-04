@@ -241,8 +241,9 @@ class BottomMenu extends StatelessWidget {
                                 var cameras = await availableCameras();
                                 Navigator.pushNamed(
                                     context, AppRoutes.cameraScreen,
-                                    arguments:
-                                        CameraPageArgument(cameras: cameras));
+                                    arguments: CameraPageArgument(
+                                        cameras: cameras,
+                                        fromchatScreen: false));
                               },
                               leading: Icon(Icons.image),
                               title: Text("Image")),

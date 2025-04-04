@@ -92,6 +92,7 @@ class AppRouter {
         return MaterialPageRoute<dynamic>(
           builder: (_) => CameraPage(
             cameras: args.cameras,
+            fromchatScreen: args.fromchatScreen,
           ),
           settings: settings,
         );

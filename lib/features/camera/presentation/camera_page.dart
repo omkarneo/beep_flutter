@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 
 class CameraPage extends StatefulWidget {
   final List<CameraDescription> cameras;
-  const CameraPage({super.key, required this.cameras});
+  final bool fromchatScreen;
+  const CameraPage(
+      {super.key, required this.cameras, required this.fromchatScreen});
 
   @override
   State<CameraPage> createState() => _CameraPageState();
@@ -55,8 +57,12 @@ class _CameraPageState extends State<CameraPage> {
       // await player.play(AssetSource('sound/shutter.mp3'));
 
       XFile picture = await controller.takePicture();
-      Navigator.pushNamed(context, AppRoutes.statusuploadpage,
-          arguments: StatusUploadPageArg(image: picture));
+      if (!widget.fromchatScreen) {
+        Navigator.pop(context, picture);
+      } else {
+        Navigator.pushNamed(context, AppRoutes.statusuploadpage,
+            arguments: StatusUploadPageArg(image: picture));
+      }
 
       // ref.read(CameraListProvider).takepicture(picture);
     } on CameraException catch (e) {

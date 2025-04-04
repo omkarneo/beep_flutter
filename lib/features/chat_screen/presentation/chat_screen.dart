@@ -8,7 +8,10 @@ import 'package:beep/utils/constants/color_constants.dart';
 import 'package:beep/utils/constants/text_constants.dart';
 import 'package:beep/utils/helpers/shared_prefs.dart';
 import 'package:beep/utils/helpers/socket_helper.dart';
+import 'package:beep/utils/router/arguments/camera_page_argument.dart';
+import 'package:beep/utils/router/router.dart';
 import 'package:beep/utils/theme/text_theme.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -171,6 +174,23 @@ class ChatTextFormWidget extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               ListTile(
+                                  onTap: () async {
+                                    var cameras = await availableCameras();
+                                    print(cameras);
+                                    var picture = await Navigator.pushNamed(
+                                        context, AppRoutes.cameraScreen,
+                                        arguments: CameraPageArgument(
+                                            cameras: cameras,
+                                            fromchatScreen: false));
+                                    if (picture != null) {
+                                      final imageTemp =
+                                          File((picture as XFile).path);
+                                      BlocProvider.of<ChatSendBloc>(context)
+                                          .add(ChatMediaEvent(
+                                              chatmedia: imageTemp));
+                                      Navigator.pop(context);
+                                    }
+                                  },
                                   leading: Icon(Icons.camera_alt),
                                   title: Text("Camera")),
                               ListTile(
@@ -309,6 +329,7 @@ class ChatTextFormWidget extends StatelessWidget {
                                         roomid: roomid,
                                         chatmedia: state.media,
                                         senderid: sharedPrefs.getid));
+                                chatbox.text = "";
                               }
                             : value
                                 ? () {

@@ -82,26 +82,28 @@ class _StatusViewerState extends State<StatusViewer>
                 itemCount: widget.statusList.length,
                 controller: controller,
                 physics: NeverScrollableScrollPhysics(),
-                onPageChanged: (value) {
-                  if (value < widget.index) {
-                    // widget.index=widget.index-1;
-                    controller.animateToPage(widget.index - 1,
-                        duration: Duration(milliseconds: 400),
-                        curve: Curves.easeInToLinear);
-                  }
-                  progresscontroller.reset();
-                  progresscontroller.forward();
-                },
+                onPageChanged: (value) {},
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {
-                      widget.index = widget.index + 1;
-                      progresscontroller.reset();
-
-                      controller.animateToPage(widget.index + 1,
+                    onHorizontalDragEnd: (details) {
+                      widget.index = widget.index - 1;
+                      controller.animateToPage(widget.index,
                           duration: Duration(milliseconds: 400),
                           curve: Curves.easeInToLinear);
+
+                      progresscontroller.reset();
                       progresscontroller.forward();
+                    },
+                    onTap: () {
+                      if (widget.index + 1 != widget.statusList.length) {
+                        widget.index = widget.index + 1;
+                        progresscontroller.reset();
+
+                        controller.animateToPage(widget.index,
+                            duration: Duration(milliseconds: 400),
+                            curve: Curves.easeInToLinear);
+                        progresscontroller.forward();
+                      }
                     },
                     child: Column(
                       children: [

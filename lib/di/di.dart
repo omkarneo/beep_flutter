@@ -196,8 +196,8 @@ Future<void> initializeDependencies() async {
         networkInfo: locator.call(),
       ));
 
-  final Connectivity connectivity = Connectivity();
+  final Connectivity connectivityResult = await Connectivity();
 
-  locator.registerLazySingleton(() => connectivity);
+  locator.registerLazySingleton(() => connectivityResult);
   locator.registerSingleton<AppRouter>(AppRouter());
 }

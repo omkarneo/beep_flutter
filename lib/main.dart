@@ -25,7 +25,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:beep/di/di.dart';
-import 'package:beep/features/login_screen/domain/usecase/login_usecase.dart';
 import 'package:beep/features/login_screen/presentation/bloc/login_screen_bloc.dart';
 import 'package:beep/utils/router/router.dart';
 import 'package:beep/utils/theme/app_theme.dart';
@@ -35,7 +34,6 @@ void main() async {
   await initializeDependencies();
   await sharedPrefs.init();
   SocketHelper.init();
-  // SocketHelper.statusSocket();
   runApp(const MyApp());
 }
 
@@ -46,10 +44,30 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      SocketHelper.logoutwithid();
+    } else if (state == AppLifecycleState.resumed) {
+      SocketHelper.loginWithid();
+    } else if (state == AppLifecycleState.inactive) {
+      SocketHelper.logoutwithid();
+    } else if (state == AppLifecycleState.detached) {
+      SocketHelper.logoutwithid();
+    }
   }
 
   @override
@@ -100,7 +118,7 @@ class _MyAppState extends State<MyApp> {
         builder: (context, child) => MaterialApp(
           navigatorKey: AppRouter.navigatorKey,
           debugShowCheckedModeBanner: false,
-          title: "Sbi Interview",
+          title: "Beep",
           onGenerateRoute: (settings) =>
               locator<AppRouter>().onGenerateRoute(settings),
           initialRoute: AppRoutes.root,
