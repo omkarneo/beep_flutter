@@ -34,7 +34,7 @@ jobs:
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
-          echo "storeFile=android/app/beep-keystore.jks" >> android/key.properties
+          echo "storeFile=app/beep-keystore.jks" >> android/key.properties
 
       - name: Install dependencies
         run: flutter pub get
