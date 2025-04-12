@@ -177,7 +177,7 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
                             print(value);
                             firstName.value = value;
                           },
-                          keyboardType: TextInputType.number,
+                          // keyboardType: TextInputType,
                           decoration: InputDecoration(
                               // hintText: "First Name",
                               // label: Text("Enter Your Number"),
@@ -200,7 +200,7 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
                             lastName.value = value;
                           },
                           // controller: phoneNumber,
-                          keyboardType: TextInputType.number,
+                          // keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                               // hintText: "Last Name",
                               // label: Text("Enter Your Number"),
@@ -220,7 +220,7 @@ class _ProfileUpdatePageState extends State<ProfileUpdatePage> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           // controller: phoneNumber,
-                          keyboardType: TextInputType.number,
+                          // keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                               // hintText: "Email",
                               // label: Text("Enter Your Number"),
