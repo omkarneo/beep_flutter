@@ -22,13 +22,19 @@ jobs:
         with:
           # 11
           flutter-version: "3.27.2"
-          channel: "stable"
+          channel:
+            "stable"
+            #5 Setup Keystore
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.STORE_FILE }}" | base64 --decode > android/app/beep-keystore.jks
+
       - name: Create key.properties
         run: |
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
-          echo "storeFile=keystore.jks" >> android/key.properties
+          echo "storeFile=${{secrets.STORE_FILE}}" >> android/key.properties
 
       - name: Install dependencies
         run: flutter pub get
