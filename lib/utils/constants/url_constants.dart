@@ -1,4 +1,4 @@
-const baseUrl = 'https://beep-backend-one.vercel.app';
+const baseUrl = 'https://up-typically-flounder.ngrok-free.app/';
 
 const entryUrl = "/login/entrypoint";
 const profileGetUrl = "/profile";
