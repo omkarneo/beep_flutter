@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:beep/utils/helpers/base_url_helper.dart';
 import 'package:bloc/bloc.dart';
 import 'package:beep/features/chat_screen/data/model/chat_data_response_model.dart';
 import 'package:beep/features/chat_screen/domain/entity/chat_data_response_entity.dart';
@@ -37,7 +38,7 @@ class ChatRoomBloc extends Bloc<ChatRoomEvent, ChatRoomState> {
               senderId: socketData[i]['senderId'],
               senderName: socketData[i]['senderName'],
               senderNumber: socketData[i]['senderNumber'],
-              image: "$baseUrl${socketData[i]['image']}",
+              image: "${AppUrl.baseUrl}${socketData[i]['image']}",
               messagetype: socketData[i]['messagetype'],
               timestamp: DateTime.parse(socketData[i]['timestamp'])));
         }

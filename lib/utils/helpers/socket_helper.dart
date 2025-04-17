@@ -1,11 +1,12 @@
 import 'package:beep/features/chat_screen/presentation/status_bloc/status_bloc.dart';
 import 'package:beep/utils/constants/url_constants.dart';
+import 'package:beep/utils/helpers/base_url_helper.dart';
 import 'package:beep/utils/helpers/shared_prefs.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class SocketHelper {
-  static io.Socket socket = io.io(baseUrl, <String, dynamic>{
+  static io.Socket socket = io.io(AppUrl.baseUrl, <String, dynamic>{
     'transports': ['websocket'],
     'autoConnect': true,
   });

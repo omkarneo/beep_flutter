@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:beep/features/dashboard/domain/entity/profile_entity.dart';
 import 'package:beep/utils/constants/url_constants.dart';
+import 'package:beep/utils/helpers/base_url_helper.dart';
 
 class ProfileResponseModel extends ProfileResponseEntity {
   String? status;
@@ -63,7 +64,7 @@ class DataProfile {
         email: json["email"],
         firstName: json["firstName"],
         lastName: json["lastName"],
-        photos: "${baseUrl}${json["photos"]}",
+        photos: "${AppUrl.baseUrl}${json["photos"]}",
       );
 
   Map<String, dynamic> toJson() => {

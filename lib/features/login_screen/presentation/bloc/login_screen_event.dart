@@ -25,8 +25,10 @@ class EntryEvent extends LoginScreenEvent {
 class OtpEvent extends LoginScreenEvent {
   final String number;
   final String otp;
+  final String token;
 
-  const OtpEvent({required this.otp, required this.number});
+  const OtpEvent(
+      {required this.otp, required this.number, required this.token});
   @override
-  List<Object> get props => [otp, number];
+  List<Object> get props => [otp, number, token];
 }

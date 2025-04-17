@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:beep/features/dashboard/domain/entity/status_response_entity.dart';
 import 'package:beep/utils/constants/url_constants.dart';
+import 'package:beep/utils/helpers/base_url_helper.dart';
 
 class StatusResponeModel extends StatusChatResponeEntity {
   String? status;
@@ -70,9 +71,9 @@ class Status {
         stausMessage: json["stausMessage"],
         statusImage: json["statusImage"] == null
             ? null
-            : "$baseUrl${json["statusImage"]}",
+            : "${AppUrl.baseUrl}${json["statusImage"]}",
         statusType: json["statusType"],
-        userPhotos: "$baseUrl${json['userphotos']}",
+        userPhotos: "${AppUrl.baseUrl}${json['userphotos']}",
         timestamp: json["timestamp"] == null
             ? null
             : DateTime.parse(json["timestamp"]),

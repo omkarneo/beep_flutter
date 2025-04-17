@@ -19,18 +19,18 @@ class EntryRequestModel extends EntryRequestEntity {
 class OtpRequestModel extends OTPRequestEntity {
   final String phonenumber;
   final String otp;
+  final String token;
 
-  OtpRequestModel({required this.phonenumber, required this.otp})
-      : super(phonenumber: phonenumber, otp: otp);
+  OtpRequestModel(
+      {required this.phonenumber, required this.otp, required this.token})
+      : super(phonenumber: phonenumber, otp: otp, token: token);
 
   factory OtpRequestModel.fromJson(Map<String, dynamic> json) =>
       OtpRequestModel(
-        phonenumber: json["phonenumber"],
-        otp: json["otp"],
-      );
+          phonenumber: json["phonenumber"],
+          otp: json["otp"],
+          token: json['token']);
 
-  Map<String, dynamic> toJson() => {
-        "number": phonenumber,
-        "otp": otp,
-      };
+  Map<String, dynamic> toJson() =>
+      {"number": phonenumber, "otp": otp, "token": token};
 }

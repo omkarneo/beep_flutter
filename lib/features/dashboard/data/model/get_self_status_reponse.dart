@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:beep/features/dashboard/data/model/status_reponse.dart';
 import 'package:beep/features/dashboard/domain/entity/get_self_status_response.dart';
 import 'package:beep/utils/constants/url_constants.dart';
+import 'package:beep/utils/helpers/base_url_helper.dart';
 
 class SelfStatusResponeModel extends StatusSelfResponeEntity {
   String? status;
@@ -53,7 +54,7 @@ class StatusUserData {
 
   factory StatusUserData.fromJson(Map<String, dynamic> json) => StatusUserData(
         username: json["username"],
-        userphotos: "$baseUrl${json["userphotos"]}",
+        userphotos: "${AppUrl.baseUrl}${json["userphotos"]}",
         statusdata: json["statusdata"] == null
             ? null
             : Status.fromJson(json["statusdata"]),

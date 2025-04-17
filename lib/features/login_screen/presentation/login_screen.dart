@@ -6,6 +6,7 @@ import 'package:beep/utils/extensions/snackbar_extention.dart';
 import 'package:beep/utils/helpers/shared_prefs.dart';
 import 'package:beep/utils/router/router.dart';
 import 'package:beep/utils/theme/text_theme.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -458,7 +459,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   return InkWell(
                                     onTap: value == false
                                         ? null
-                                        : () {
+                                        : () async {
                                             if (state
                                                 is MoblieNumberScreenState) {
                                               if (phoneNumber.text.isNotEmpty) {
@@ -475,12 +476,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                               }
                                             } else {
                                               onsubmit.value = false;
-
+                                              final fcmToken =
+                                                  await FirebaseMessaging
+                                                      .instance
+                                                      .getToken();
+                                              print("fcmToken ${fcmToken}");
                                               BlocProvider.of<LoginScreenBloc>(
                                                       context)
                                                   .add(OtpEvent(
                                                       number: phoneNumber.text,
-                                                      otp: "1234".toString()));
+                                                      otp: "1234".toString(),
+                                                      token: fcmToken!));
                                               // Navigator.pushNamedAndRemoveUntil(
                                               //   context,
                                               //   AppRoutes.dashboardScreen,

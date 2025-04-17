@@ -6,7 +6,6 @@ import 'package:beep/features/dashboard/data/model/room_model.dart';
 import 'package:beep/features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'package:beep/utils/constants/color_constants.dart';
 import 'package:beep/utils/helpers/shared_prefs.dart';
-import 'package:beep/utils/helpers/socket_helper.dart';
 import 'package:beep/utils/router/arguments/chatscreen_argymenjt.dart';
 import 'package:beep/utils/router/router.dart';
 import 'package:beep/utils/theme/text_theme.dart';

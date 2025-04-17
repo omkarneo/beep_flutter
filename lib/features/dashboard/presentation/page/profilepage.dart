@@ -46,7 +46,7 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
                         image: NetworkImage(
                             state.profileResponseEntity.data?.photos ??
                                 emptyImage),
-                        fit: BoxFit.fitHeight)),
+                        fit: BoxFit.fill)),
                 child: Align(
                   alignment: Alignment.bottomRight,
                   child: Icon(

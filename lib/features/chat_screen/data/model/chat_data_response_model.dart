@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:beep/features/chat_screen/domain/entity/chat_data_response_entity.dart';
 import 'package:beep/utils/constants/url_constants.dart';
+import 'package:beep/utils/helpers/base_url_helper.dart';
 
 class ChatRoomResponseModel extends ChatDataResponseEntity {
   String? status;
@@ -74,7 +75,7 @@ class ChatRoomMessage {
               ? null
               : DateTime.parse(json["timestamp"]),
           id: json["_id"],
-          image: "$baseUrl${json['image']}",
+          image: "${AppUrl.baseUrl}${json['image']}",
           messagetype: json['messagetype']);
 
   Map<String, dynamic> toJson() => {

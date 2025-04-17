@@ -20,6 +20,8 @@ class EntryRepoImple extends EntryRepo {
   @override
   Future<OtpResponseModel> verifyOtp(OTPRequestEntity requestEntity) async {
     return await entryDataSource.otpVerifyApiCall(OtpRequestModel(
-        phonenumber: requestEntity.phonenumber, otp: requestEntity.otp));
+        phonenumber: requestEntity.phonenumber,
+        otp: requestEntity.otp,
+        token: requestEntity.token));
   }
 }

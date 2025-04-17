@@ -1,4 +1,5 @@
-const baseUrl = 'https://up-typically-flounder.ngrok-free.app';
+const baseDevUrl = 'https://weekly-relieved-bear.ngrok-free.app';
+const baseProdUrl = 'https://up-typically-flounder.ngrok-free.app';
 
 const entryUrl = "/login/entrypoint";
 const profileGetUrl = "/profile";

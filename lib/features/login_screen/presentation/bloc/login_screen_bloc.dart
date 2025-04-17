@@ -30,8 +30,10 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
       (event, emit) async {
         try {
           OtpResponseEntity data = await otpVerifyUse.call(
-              params:
-                  OTPRequestEntity(phonenumber: event.number, otp: event.otp));
+              params: OTPRequestEntity(
+                  phonenumber: event.number,
+                  otp: event.otp,
+                  token: event.token));
           print("response $data");
           sharedPrefs.setstatusKey("Online");
           sharedPrefs.setid(data.data?.id ?? "");

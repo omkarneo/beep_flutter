@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:beep/utils/helpers/base_url_helper.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:beep/utils/constants/text_constants.dart';
-import 'package:beep/utils/constants/url_constants.dart';
 import 'package:beep/utils/errors/exceptions.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -43,7 +43,7 @@ class NetworkRequest {
     // prefs.setString("user_token", "eyjjjjjasajshajshajshajshjashjahsjahs");
     // String? token = prefs.getString("user_token");
     // _dio.options.headers["authorization"] = "Bearer $token";
-    print("$baseUrl$url");
+    print("${AppUrl.baseUrl}$url");
     print(headers);
     headers ??= {};
 
@@ -52,14 +52,14 @@ class NetworkRequest {
       print(body);
       switch (method) {
         case get:
-          response = await _dio.get("$baseUrl$url",
+          response = await _dio.get("${AppUrl.baseUrl}$url",
               options:
                   Options(headers: headers, responseType: ResponseType.plain));
           break;
         case "FORMPOST":
           headers["accept"] = "application/json";
           var data = body;
-          response = await _dio.post("$baseUrl$url",
+          response = await _dio.post("${AppUrl.baseUrl}$url",
               data: data,
               options:
                   Options(headers: headers, responseType: ResponseType.plain));
@@ -68,25 +68,25 @@ class NetworkRequest {
           headers["accept"] = "application/json";
           var data = jsonEncode(body);
           print('Enc data --> $data');
-          response = await _dio.post("$baseUrl$url",
+          response = await _dio.post("${AppUrl.baseUrl}$url",
               data: data,
               options:
                   Options(headers: headers, responseType: ResponseType.plain));
           break;
         case put:
-          response = await _dio.put("$baseUrl$url",
+          response = await _dio.put("${AppUrl.baseUrl}$url",
               data: jsonEncode(body),
               options:
                   Options(headers: headers, responseType: ResponseType.plain));
           break;
         case patch:
-          response = await _dio.patch("$baseUrl$url",
+          response = await _dio.patch("${AppUrl.baseUrl}$url",
               data: jsonEncode(body),
               options:
                   Options(headers: headers, responseType: ResponseType.plain));
           break;
         case delete:
-          response = await _dio.delete("$baseUrl$url",
+          response = await _dio.delete("${AppUrl.baseUrl}$url",
               options:
                   Options(headers: headers, responseType: ResponseType.plain));
           break;

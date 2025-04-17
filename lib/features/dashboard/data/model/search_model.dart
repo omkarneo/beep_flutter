@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:beep/utils/constants/url_constants.dart';
+import 'package:beep/utils/helpers/base_url_helper.dart';
 
 class SearchResponseModel {
   String? status;
@@ -52,7 +53,8 @@ class UserData {
       phonenumber: json["phonenumber"],
       firstName: json["firstName"],
       lastName: json["lastName"],
-      photos: json["photos"] == null ? null : "$baseUrl${json["photos"]}",
+      photos:
+          json["photos"] == null ? null : "${AppUrl.baseUrl}${json["photos"]}",
       id: json["_id"]);
 
   Map<String, dynamic> toJson() => {

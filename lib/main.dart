@@ -17,10 +17,14 @@ import 'package:beep/features/profile_update_page/presentation/bloc/update_profi
 import 'package:beep/features/status_upload/domain/usecase/status_create_usecase.dart';
 import 'package:beep/features/status_upload/domain/usecase/status_upload_usecase.dart';
 import 'package:beep/features/status_upload/presentation/bloc/status_upload_bloc.dart';
+import 'package:beep/firebase_options.dart';
 import 'package:beep/shared/upload/domain/usecase/chat_photo_upload_usecase.dart';
 import 'package:beep/shared/upload/domain/usecase/profile_photo_upload_usecase.dart';
+import 'package:beep/utils/helpers/env_helper.dart';
 import 'package:beep/utils/helpers/shared_prefs.dart';
 import 'package:beep/utils/helpers/socket_helper.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,7 +35,23 @@ import 'package:beep/utils/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await envHelper.load(fileName: ".env");
   await initializeDependencies();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+  final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+  if (apnsToken != null) {
+    // APNS token is available, make FCM plugin API requests...
+  }
+  await FirebaseMessaging.instance.setAutoInitEnabled(true);
+
   await sharedPrefs.init();
   SocketHelper.init();
   runApp(const MyApp());

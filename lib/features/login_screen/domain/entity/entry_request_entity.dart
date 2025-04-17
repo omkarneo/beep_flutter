@@ -7,6 +7,8 @@ class EntryRequestEntity {
 class OTPRequestEntity {
   final String phonenumber;
   final String otp;
+  final String token;
 
-  OTPRequestEntity({required this.phonenumber, required this.otp});
+  OTPRequestEntity(
+      {required this.phonenumber, required this.otp, required this.token});
 }

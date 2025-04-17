@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:beep/features/dashboard/domain/entity/room_entity.dart';
 import 'package:beep/utils/constants/url_constants.dart';
+import 'package:beep/utils/helpers/base_url_helper.dart';
 
 class RoomResponseModel extends RoomResponseEntity {
   String? status;
@@ -67,7 +68,7 @@ class RoomData {
       id: json["_id"],
       lastchat: json["lastchat"],
       lastchatTime: json['lastchatTime'],
-      recevierphoto: "$baseUrl${json['recevierphoto']}");
+      recevierphoto: "${AppUrl.baseUrl}${json['recevierphoto']}");
 
   Map<String, dynamic> toJson() => {
         "roomId": roomId,

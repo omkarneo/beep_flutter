@@ -282,7 +282,7 @@ class _CallTitleWidgetState extends State<CallTitleWidget> {
                                   image: DecorationImage(
                                       image: NetworkImage(
                                           state.photo ?? emptyImage),
-                                      fit: BoxFit.fitHeight)),
+                                      fit: BoxFit.fill)),
                               child: state.selfStatus != null
                                   ? SizedBox.shrink()
                                   : Align(
