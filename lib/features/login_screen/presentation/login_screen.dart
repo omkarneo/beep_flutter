@@ -199,32 +199,32 @@ class _LoginScreenState extends State<LoginScreen> {
                                           Expanded(
                                             child: InkWell(
                                               onTap: () async {
-                                                final code = await countryPicker
-                                                    .showPicker(
-                                                        clipBehavior:
-                                                            Clip.antiAlias,
-                                                        backgroundColor:
-                                                            secondaryBackground,
-                                                        pickerMaxHeight:
-                                                            MediaQuery.sizeOf(
-                                                                        context)
-                                                                    .height /
-                                                                1.7,
-                                                        shape:
-                                                            ContinuousRectangleBorder(
-                                                          side: BorderSide(
-                                                              color:
-                                                                  primaryBackground),
-                                                          borderRadius:
-                                                              BorderRadius.only(
-                                                                  topLeft: Radius
-                                                                      .circular(
-                                                                          20),
-                                                                  topRight: Radius
-                                                                      .circular(
-                                                                          20)),
-                                                        ),
-                                                        context: context);
+                                                // final code = await countryPicker
+                                                //     .showPicker(
+                                                //         clipBehavior:
+                                                //             Clip.antiAlias,
+                                                //         backgroundColor:
+                                                //             secondaryBackground,
+                                                //         pickerMaxHeight:
+                                                //             MediaQuery.sizeOf(
+                                                //                         context)
+                                                //                     .height /
+                                                //                 1.7,
+                                                //         shape:
+                                                //             ContinuousRectangleBorder(
+                                                //           side: BorderSide(
+                                                //               color:
+                                                //                   primaryBackground),
+                                                //           borderRadius:
+                                                //               BorderRadius.only(
+                                                //                   topLeft: Radius
+                                                //                       .circular(
+                                                //                           20),
+                                                //                   topRight: Radius
+                                                //                       .circular(
+                                                //                           20)),
+                                                //         ),
+                                                //         context: context);
                                               },
                                               child: Padding(
                                                 padding:

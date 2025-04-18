@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:beep/features/chat_screen/domain/usecase/chat_data_usecase.dart';
 import 'package:beep/features/chat_screen/presentation/bloc/chat_send_bloc.dart';
 import 'package:beep/features/chat_screen/presentation/chat_list_bloc/chat_room_bloc.dart';
@@ -20,6 +21,7 @@ import 'package:beep/features/status_upload/presentation/bloc/status_upload_bloc
 import 'package:beep/firebase_options.dart';
 import 'package:beep/shared/upload/domain/usecase/chat_photo_upload_usecase.dart';
 import 'package:beep/shared/upload/domain/usecase/profile_photo_upload_usecase.dart';
+import 'package:beep/utils/constants/color_constants.dart';
 import 'package:beep/utils/helpers/env_helper.dart';
 import 'package:beep/utils/helpers/shared_prefs.dart';
 import 'package:beep/utils/helpers/socket_helper.dart';
@@ -33,11 +35,43 @@ import 'package:beep/features/login_screen/presentation/bloc/login_screen_bloc.d
 import 'package:beep/utils/router/router.dart';
 import 'package:beep/utils/theme/app_theme.dart';
 
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  AwesomeNotifications().createNotification(
+      content: NotificationContent(
+    id: 10,
+    channelKey: 'MESSAGE_CHANNEL',
+    actionType: ActionType.Default,
+    title: message.notification!.title,
+    body: message.notification?.body ?? "",
+  ));
+  print(message);
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await envHelper.load(fileName: ".env");
   await initializeDependencies();
-
+  AwesomeNotifications().initialize(
+      // set the icon to null if you want to use the default app icon
+      'resource://drawable/ic_stat_name',
+      [
+        NotificationChannel(
+            channelGroupKey: 'MESSAGE_CHANNEL',
+            channelKey: 'MESSAGE_CHANNEL',
+            channelName: 'Basic notifications',
+            channelDescription: 'Notification channel for basic tests',
+            defaultColor: primaryBackground,
+            ledColor: Colors.white)
+      ],
+      // Channel groups are only visual and are not required
+      channelGroups: [
+        NotificationChannelGroup(
+            channelGroupKey: 'MESSAGE_CHANNEL', channelGroupName: 'Basic group')
+      ],
+      debug: true);
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -51,6 +85,22 @@ void main() async {
     // APNS token is available, make FCM plugin API requests...
   }
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+    AwesomeNotifications().createNotification(
+        content: NotificationContent(
+      id: 10,
+      channelKey: 'MESSAGE_CHANNEL',
+      actionType: ActionType.Default,
+      title: message.notification!.title,
+      body: message.notification?.body ?? "",
+    ));
+  });
+  FirebaseMessaging.onMessageOpenedApp.listen((data) {
+    print(data);
+    print("Message clicked!");
+  });
 
   await sharedPrefs.init();
   SocketHelper.init();

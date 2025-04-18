@@ -25,6 +25,7 @@ class AppRoutes {
   static const statusPreviewScreen = "/statusPreviewScreen";
   static const cameraScreen = "/cameraScreen";
   static const statusuploadpage = "/statusuploadpage";
+  static const notificationPage = "/notificationPage";
 }
 
 class AppRouter {
