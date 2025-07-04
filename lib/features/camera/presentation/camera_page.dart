@@ -50,6 +50,7 @@ class _CameraPageState extends State<CameraPage> {
       return null;
     }
     try {
+      print("camera 0");
       // final player = await AudioPlayer();
       // await controller.setFlashMode(FlashMode.off);
       // // await controller.setFlashMode()
@@ -57,9 +58,12 @@ class _CameraPageState extends State<CameraPage> {
       // await player.play(AssetSource('sound/shutter.mp3'));
 
       XFile picture = await controller.takePicture();
+      print("camera 1");
       if (!widget.fromchatScreen) {
+        print("camera 2");
         Navigator.pop(context, picture);
       } else {
+        print("camera 3");
         Navigator.pushNamed(context, AppRoutes.statusuploadpage,
             arguments: StatusUploadPageArg(image: picture));
       }

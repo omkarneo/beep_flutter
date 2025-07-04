@@ -19,6 +19,7 @@ class ChatSendBloc extends Bloc<ChatSendEvent, ChatSendState> {
             await chatPhotoUploadUsecase.call(params: event.chatmedia);
         SocketHelper.socket.emit("sendMessage", {
           "senderId": sharedPrefs.getid,
+          "receiverId": event.receiverId,
           "roomId": event.roomid,
           "message": event.message,
           "messagetype": "image",
@@ -27,6 +28,7 @@ class ChatSendBloc extends Bloc<ChatSendEvent, ChatSendState> {
       } else {
         SocketHelper.socket.emit("sendMessage", {
           "senderId": sharedPrefs.getid,
+          "receiverId": event.receiverId,
           "roomId": event.roomid,
           "message": event.message,
           "messagetype": "text"

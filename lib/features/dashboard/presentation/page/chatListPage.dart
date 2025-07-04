@@ -146,6 +146,7 @@ class ChatTile extends StatelessWidget {
           BlocProvider.of<StatusBloc>(context).add(StatusDisconnect());
           BlocProvider.of<ChatRoomBloc>(context)
               .add(ChatroomDisconnect(roomid: chatTileData.roomId!));
+          BlocProvider.of<DashboardBloc>(context).add(DashboardChatEvent());
         });
       },
       child: SizedBox(
@@ -166,7 +167,7 @@ class ChatTile extends StatelessWidget {
                       image: NetworkImage(
                         chatTileData.recevierphoto!,
                       ),
-                      fit: BoxFit.fitHeight)),
+                      fit: BoxFit.fitWidth)),
             ),
             SizedBox(
               width: 20,
@@ -206,10 +207,26 @@ class ChatTile extends StatelessWidget {
                 SizedBox(
                   height: 6,
                 ),
-                Icon(
-                  Icons.check_rounded,
-                  size: 17,
-                )
+                (chatTileData.hasBeenRead == false)
+                    ? Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                            color: primaryBackground,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Center(
+                          child: Text(
+                            chatTileData.unReadCount.toString(),
+                            style: TextStyleHelper.boldStyle(
+                                color: primaryTextColor),
+                          ),
+                        ),
+                      )
+                    : SizedBox.shrink()
+                // Icon(
+                //   Icons.check_rounded,
+                //   size: 17,
+                // )
               ],
             ),
             SizedBox(

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:beep/utils/helpers/base_url_helper.dart';
+import 'package:beep/utils/helpers/shared_prefs.dart';
 import 'package:bloc/bloc.dart';
 import 'package:beep/features/chat_screen/data/model/chat_data_response_model.dart';
 import 'package:beep/features/chat_screen/domain/entity/chat_data_response_entity.dart';
@@ -19,9 +20,9 @@ class ChatRoomBloc extends Bloc<ChatRoomEvent, ChatRoomState> {
     on<JoinChatRoom>((event, emit) async {
       ChatDataResponseEntity data =
           await chatRoomDataUsecase.call(params: event.roomid);
-      print("socket data Room Init");
+      SocketHelper.socket.emit("connect_room",
+          {"userid": sharedPrefs.getid, "roomid": event.roomid});
       SocketHelper.socket.on(event.roomid, (socketData) {
-        print("Got Message inn Room $socketData");
         add(SocketGetMessageEvent(socketData: socketData));
       });
       emit(ChatRoomMessageState(messages: data.data ?? []));
@@ -48,7 +49,10 @@ class ChatRoomBloc extends Bloc<ChatRoomEvent, ChatRoomState> {
     on<ChatroomDisconnect>(
       (event, emit) {
         print("Chatroom Socket Disconnected");
+
         SocketHelper.socket.off(event.roomid);
+        SocketHelper.socket
+            .emit("disconnect_room", {"userid": sharedPrefs.getid});
         emit(ChatRoomInitial());
       },
     );

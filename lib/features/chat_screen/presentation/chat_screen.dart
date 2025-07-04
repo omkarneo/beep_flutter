@@ -54,7 +54,8 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     print("Socket dispose");
-
+    BlocProvider.of<ChatRoomBloc>(context)
+        .add(ChatroomDisconnect(roomid: widget.roomid));
     super.dispose();
   }
 
@@ -95,6 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                     ChatList(),
                     ChatTextFormWidget(
+                      receiverId: widget.receiverId,
                       roomid: widget.roomid,
                     )
                   ],
@@ -110,9 +112,11 @@ class _ChatScreenState extends State<ChatScreen> {
 
 class ChatTextFormWidget extends StatelessWidget {
   final String roomid;
+  final String receiverId;
 
   ChatTextFormWidget({
     required this.roomid,
+    required this.receiverId,
     super.key,
   });
 
@@ -326,6 +330,7 @@ class ChatTextFormWidget extends StatelessWidget {
                                         message: chatbox.text == ""
                                             ? ""
                                             : chatbox.text,
+                                        receiverId: receiverId,
                                         roomid: roomid,
                                         chatmedia: state.media,
                                         senderid: sharedPrefs.getid));
@@ -338,6 +343,7 @@ class ChatTextFormWidget extends StatelessWidget {
                                             message: chatbox.text == ""
                                                 ? ""
                                                 : chatbox.text,
+                                            receiverId: receiverId,
                                             roomid: roomid,
                                             senderid: sharedPrefs.getid));
 
@@ -376,6 +382,7 @@ class ChatTextFormWidget extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class ChatList extends StatelessWidget {
   ChatList({
     super.key,
@@ -385,17 +392,18 @@ class ChatList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // if (listScrollController.hasClients) {
-
-    // }
     return BlocBuilder<ChatRoomBloc, ChatRoomState>(
       builder: (context, state) {
         if (state is ChatRoomMessageState) {
-          if (listScrollController.hasClients) {
-            final position =
-                listScrollController.position.minScrollExtent + 10000;
-            listScrollController.jumpTo(position);
-          }
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            //  if (!mounted) return;
+            listScrollController.animateTo(
+              listScrollController.position.minScrollExtent,
+              duration: Duration(milliseconds: 100),
+              curve: Curves.easeOut,
+            );
+          });
+
           List<ChatRoomMessage> chatData = state.messages;
 
           return Expanded(
@@ -405,15 +413,13 @@ class ChatList extends StatelessWidget {
                   ? Center(child: Text("No Communication Begun."))
                   : ListView.builder(
                       controller: listScrollController,
-
-                      // reverse: true,
-
+                      reverse: true,
                       itemCount: chatData.length,
-                      // chat.length,
                       itemBuilder: (context, index) {
+                        final reversedIndex = chatData.length - 1 - index;
                         return Chattile(
                           chatData: chatData,
-                          index: index,
+                          index: reversedIndex,
                         );
                       },
                     ),

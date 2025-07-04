@@ -41,6 +41,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   AwesomeNotifications().createNotification(
       content: NotificationContent(
     id: 10,
+    payload: {"roomid": message.data['roomid']},
     channelKey: 'MESSAGE_CHANNEL',
     actionType: ActionType.Default,
     title: message.notification!.title,
@@ -91,6 +92,7 @@ void main() async {
     AwesomeNotifications().createNotification(
         content: NotificationContent(
       id: 10,
+      payload: {"roomid": message.data['roomid']},
       channelKey: 'MESSAGE_CHANNEL',
       actionType: ActionType.Default,
       title: message.notification!.title,

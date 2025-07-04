@@ -44,6 +44,8 @@ class RoomData {
   String? lastchat;
   String? recevierphoto;
   String? lastchatTime;
+  bool? hasBeenRead;
+  int? unReadCount;
 
   RoomData(
       {this.roomId,
@@ -53,7 +55,9 @@ class RoomData {
       this.id,
       this.lastchat,
       this.lastchatTime,
-      this.recevierphoto});
+      this.recevierphoto,
+      this.hasBeenRead,
+      this.unReadCount});
 
   factory RoomData.fromRawJson(String str) =>
       RoomData.fromJson(json.decode(str));
@@ -68,6 +72,8 @@ class RoomData {
       id: json["_id"],
       lastchat: json["lastchat"],
       lastchatTime: json['lastchatTime'],
+      hasBeenRead: json['hasBeenRead'],
+      unReadCount: json['unReadCount'],
       recevierphoto: "${AppUrl.baseUrl}${json['recevierphoto']}");
 
   Map<String, dynamic> toJson() => {
@@ -75,6 +81,8 @@ class RoomData {
         "recevierid": recevierid,
         "receviernumber": receviernumber,
         "recevierName": recevierName,
+        "hasBeenRead": hasBeenRead,
         "_id": id,
+        "unReadCount": unReadCount
       };
 }

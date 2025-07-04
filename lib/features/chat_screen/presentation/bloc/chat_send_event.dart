@@ -19,12 +19,14 @@ class ChatTextEvent extends ChatSendEvent {}
 class SendMessageEvent extends ChatSendEvent {
   final File? chatmedia;
   final String senderid;
+  final String receiverId;
   final String message;
   final String roomid;
   const SendMessageEvent(
       {required this.message,
       required this.roomid,
       required this.senderid,
+      required this.receiverId,
       this.chatmedia});
   @override
   List<Object> get props => [];
