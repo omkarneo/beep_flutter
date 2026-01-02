@@ -28,6 +28,7 @@ import 'package:beep/utils/helpers/socket_helper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:beep/di/di.dart';
@@ -54,6 +55,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await envHelper.load(fileName: ".env");
   await initializeDependencies();
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.edgeToEdge,
+    overlays: SystemUiOverlay.values,
+  );
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   AwesomeNotifications().initialize(
       // set the icon to null if you want to use the default app icon
       'resource://drawable/ic_stat_name',
@@ -120,7 +129,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -188,6 +196,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         designSize: const Size(375, 667),
         minTextAdapt: true,
         builder: (context, child) => MaterialApp(
+          themeMode: ThemeMode.system,
           navigatorKey: AppRouter.navigatorKey,
           debugShowCheckedModeBanner: false,
           title: "Beep",

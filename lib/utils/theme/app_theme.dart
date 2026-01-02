@@ -8,6 +8,7 @@ class AppTheme {
   /// Light Theme Related Data
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
+
     appBarTheme: const AppBarTheme(
       systemOverlayStyle: SystemUiOverlayStyle.dark,
     ),
@@ -19,7 +20,13 @@ class AppTheme {
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: primaryBackground,
     ),
-
+    popupMenuTheme: PopupMenuThemeData(
+      color: Colors.grey[900], // dark background
+      textStyle: const TextStyle(color: Colors.white), // text color
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+    ),
     inputDecorationTheme: InputDecorationTheme(
       isDense: true,
 
@@ -42,6 +49,20 @@ class AppTheme {
     ),
     colorScheme: ColorScheme.fromSeed(
       seedColor: primaryBackground,
+      brightness: Brightness.dark,
+    ).copyWith(
+      surface: Colors.white,
+      onSurface: Colors.black,
+      surfaceTint: Colors.transparent,
+    ),
+
+    dropdownMenuTheme: DropdownMenuThemeData(
+      menuStyle: MenuStyle(
+        backgroundColor: MaterialStatePropertyAll(Colors.black),
+        surfaceTintColor:
+            MaterialStatePropertyAll(Colors.transparent), // 👈 disable tint
+      ),
+      textStyle: const TextStyle(color: Colors.white),
     ),
   );
 //

@@ -89,8 +89,12 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
                   style: TextStyleHelper.mediumStyle(color: primaryTextColor),
                 ),
                 menuStyle: MenuStyle(
-                    backgroundColor:
-                        WidgetStateProperty.all(secondaryBackground)),
+                  backgroundColor: WidgetStateProperty.all(primaryBackground),
+                  // surfaceTintColor: WidgetStateProperty.all(primaryTextColor),
+                  fixedSize: MaterialStateProperty.all(Size(
+                      MediaQuery.sizeOf(context).width - 20, double.infinity)),
+                  // width: MaterialStatePropertyAll(200), // dropdown menu width
+                ),
 
                 width: MediaQuery.sizeOf(context).width - 20,
                 inputDecorationTheme: InputDecorationTheme(
@@ -120,7 +124,14 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
                 },
                 dropdownMenuEntries:
                     status.map<DropdownMenuEntry<String>>((String value) {
-                  return DropdownMenuEntry<String>(value: value, label: value);
+                  return DropdownMenuEntry<String>(
+                      value: value,
+                      label: value,
+                      labelWidget: Text(
+                        value,
+                        style: TextStyleHelper.mediumStyle(
+                            color: primaryTextColor),
+                      ));
                 }).toList(),
               ),
               SizedBox(

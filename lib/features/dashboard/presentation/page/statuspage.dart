@@ -10,14 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-class CallsPage extends StatefulWidget {
-  const CallsPage({super.key});
+class StatusPage extends StatefulWidget {
+  const StatusPage({super.key});
 
   @override
-  State<CallsPage> createState() => _CallsPageState();
+  State<StatusPage> createState() => _StatusPageState();
 }
 
-class _CallsPageState extends State<CallsPage> {
+class _StatusPageState extends State<StatusPage> {
   void initState() {
     super.initState();
     BlocProvider.of<DashboardBloc>(context).add(DashboardCallEvent());
@@ -131,7 +131,7 @@ class CallTile extends StatelessWidget {
                       image: DecorationImage(
                         fit: BoxFit.fitHeight,
                         image: NetworkImage(
-                          statusdata[index].userPhotos ?? "",
+                          statusdata[index].userPhotos ?? emptyImage,
                         ),
                       )),
                   // child: Image.network(image),

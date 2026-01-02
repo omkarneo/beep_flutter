@@ -195,11 +195,25 @@ class ChatTextFormWidget extends StatelessWidget {
                                       Navigator.pop(context);
                                     }
                                   },
-                                  leading: Icon(Icons.camera_alt),
-                                  title: Text("Camera")),
+                                  leading: Icon(
+                                    Icons.camera_alt,
+                                    color: secondaryTextColor,
+                                  ),
+                                  title: Text(
+                                    "Camera",
+                                    style: TextStyleHelper.mediumStyle(
+                                        color: secondaryTextColor),
+                                  )),
                               ListTile(
-                                leading: Icon(Icons.photo),
-                                title: Text("Gallery"),
+                                leading: Icon(
+                                  Icons.photo,
+                                  color: secondaryTextColor,
+                                ),
+                                title: Text(
+                                  "Gallery",
+                                  style: TextStyleHelper.mediumStyle(
+                                      color: secondaryTextColor),
+                                ),
                                 onTap: () async {
                                   final image = await ImagePicker()
                                       .pickImage(source: ImageSource.gallery);
@@ -208,6 +222,7 @@ class ChatTextFormWidget extends StatelessWidget {
                                     final imageTemp = File(image.path);
                                     BlocProvider.of<ChatSendBloc>(context).add(
                                         ChatMediaEvent(chatmedia: imageTemp));
+                                    Navigator.pop(context);
                                   }
                                 },
                               )
@@ -306,7 +321,7 @@ class ChatTextFormWidget extends StatelessWidget {
                                 border: InputBorder.none,
                                 hintText: "Type Message",
                                 hintStyle: TextStyleHelper.regularStyle(
-                                    fontSize: 14))),
+                                    fontSize: 14, color: secondaryTextColor))),
                       ],
                     ),
                   ),
@@ -495,7 +510,7 @@ class Chattile extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10),
                                 image: DecorationImage(
                                     image:
-                                        NetworkImage(chatData[index].image!))),
+                                        NetworkImage(chatData[index].image!,))),
                           ),
                           SizedBox(
                             height: 10,
