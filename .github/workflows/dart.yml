@@ -66,5 +66,5 @@ jobs:
         run: |
           firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
             --app "1:926052974033:android:0a44b554ee81f08ae774f0" \
-            --groups "release" \
+            --groups "all" \
             --release-notes "CI/CD with Deployment"
