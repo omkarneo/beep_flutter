@@ -11,6 +11,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: Column(
+          children: [ProfileTitleWidget(), ProfilePhotoPage()],
+        ),
+      ),
+    );
+  }
+}
+
 class ProfilePhotoPage extends StatefulWidget {
   const ProfilePhotoPage({super.key});
 
@@ -31,172 +47,179 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DashboardBloc, DashboardState>(
-      builder: (context, state) {
-        if (state is DashboardProfileState) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                height: 170,
-                width: 170,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    image: DecorationImage(
-                        image: NetworkImage(
-                            state.profileResponseEntity.data?.photos ??
-                                emptyImage),
-                        fit: BoxFit.fill)),
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: Icon(
-                    Icons.add_circle,
+    return Container(
+      child: BlocBuilder<DashboardBloc, DashboardState>(
+        builder: (context, state) {
+          if (state is DashboardProfileState) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Hero(
+                  tag: "userphoto",
+                  child: Container(
+                    height: 170,
+                    width: 170,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(color: yellowprimary, width: 2),
+                        image: DecorationImage(
+                            image: NetworkImage(
+                                state.profileResponseEntity.data?.photos ??
+                                    emptyImage),
+                            fit: BoxFit.fill)),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Icon(
+                        Icons.add_circle,
+                        color: primaryTextColor,
+                        size: 50,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  " ${state.profileResponseEntity.data?.firstName} ${state.profileResponseEntity.data?.lastName}",
+                  style: TextStyleHelper.boldStyle(
+                      fontSize: 30, color: primaryTextColor),
+                ),
+                Text(
+                  "+91 ${state.profileResponseEntity.data?.phonenumber}",
+                  style: TextStyleHelper.lightStyle(
+                      fontSize: 19, color: primaryTextColor),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                DropdownMenu<String>(
+                  initialSelection: intialTextselected,
+                  hintText: "Set Availability",
+                  trailingIcon: Icon(
+                    Icons.arrow_drop_down,
                     color: primaryTextColor,
-                    size: 50,
+                    size: 30,
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                " ${state.profileResponseEntity.data?.firstName} ${state.profileResponseEntity.data?.lastName}",
-                style: TextStyleHelper.boldStyle(
-                    fontSize: 30, color: primaryTextColor),
-              ),
-              Text(
-                "+91 ${state.profileResponseEntity.data?.phonenumber}",
-                style: TextStyleHelper.lightStyle(
-                    fontSize: 19, color: primaryTextColor),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              DropdownMenu<String>(
-                initialSelection: intialTextselected,
-                hintText: "Set Availability",
-                trailingIcon: Icon(
-                  Icons.arrow_drop_down,
-                  color: primaryTextColor,
-                  size: 30,
-                ),
-                leadingIcon: Icon(
-                  Icons.co_present_outlined,
-                  color: primaryTextColor,
-                ),
-                label: Text(
-                  "Status",
-                  style: TextStyleHelper.mediumStyle(color: primaryTextColor),
-                ),
-                menuStyle: MenuStyle(
-                  backgroundColor: WidgetStateProperty.all(primaryBackground),
-                  // surfaceTintColor: WidgetStateProperty.all(primaryTextColor),
-                  fixedSize: MaterialStateProperty.all(Size(
-                      MediaQuery.sizeOf(context).width - 20, double.infinity)),
-                  // width: MaterialStatePropertyAll(200), // dropdown menu width
-                ),
+                  leadingIcon: Icon(
+                    Icons.co_present_outlined,
+                    color: primaryTextColor,
+                  ),
+                  label: Text(
+                    "Status",
+                    style: TextStyleHelper.mediumStyle(color: primaryTextColor),
+                  ),
+                  menuStyle: MenuStyle(
+                    backgroundColor: WidgetStateProperty.all(primaryBackground),
+                    // surfaceTintColor: WidgetStateProperty.all(primaryTextColor),
+                    fixedSize: MaterialStateProperty.all(Size(
+                        MediaQuery.sizeOf(context).width - 20,
+                        double.infinity)),
+                    // width: MaterialStatePropertyAll(200), // dropdown menu width
+                  ),
 
-                width: MediaQuery.sizeOf(context).width - 20,
-                inputDecorationTheme: InputDecorationTheme(
-                  border: InputBorder.none,
+                  width: MediaQuery.sizeOf(context).width - 20,
+                  inputDecorationTheme: InputDecorationTheme(
+                    border: InputBorder.none,
 
-                  // fillColor: primaryTextColor,
-                  hintStyle:
-                      TextStyleHelper.lightStyle(color: primaryTextColor),
-                  // helperStyle:
+                    // fillColor: primaryTextColor,
+                    hintStyle:
+                        TextStyleHelper.lightStyle(color: primaryTextColor),
+                    // helperStyle:
+                  ),
+                  textStyle: TextStyleHelper.boldStyle(color: primaryTextColor),
+                  // initialSelection: status.first,
+                  onSelected: (String? value) {
+                    if (value == "Offline") {
+                      sharedPrefs.setstatusKey("Offline");
+                      SocketHelper.logout(
+                          state.profileResponseEntity.data?.phonenumber ?? "");
+                    } else {
+                      sharedPrefs.setstatusKey("Online");
+                      SocketHelper.login(
+                          state.profileResponseEntity.data?.phonenumber ?? "");
+                    }
+                    // This is called when the user selects an item.
+                    // setState(() {
+                    //   status = value;
+                    // });
+                  },
+                  dropdownMenuEntries:
+                      status.map<DropdownMenuEntry<String>>((String value) {
+                    return DropdownMenuEntry<String>(
+                        value: value,
+                        label: value,
+                        labelWidget: Text(
+                          value,
+                          style: TextStyleHelper.mediumStyle(
+                              color: primaryTextColor),
+                        ));
+                  }).toList(),
                 ),
-                textStyle: TextStyleHelper.boldStyle(color: primaryTextColor),
-                // initialSelection: status.first,
-                onSelected: (String? value) {
-                  if (value == "Offline") {
-                    sharedPrefs.setstatusKey("Offline");
-                    SocketHelper.logout(
-                        state.profileResponseEntity.data?.phonenumber ?? "");
-                  } else {
-                    sharedPrefs.setstatusKey("Online");
-                    SocketHelper.login(
-                        state.profileResponseEntity.data?.phonenumber ?? "");
-                  }
-                  // This is called when the user selects an item.
-                  // setState(() {
-                  //   status = value;
-                  // });
-                },
-                dropdownMenuEntries:
-                    status.map<DropdownMenuEntry<String>>((String value) {
-                  return DropdownMenuEntry<String>(
-                      value: value,
-                      label: value,
-                      labelWidget: Text(
-                        value,
-                        style: TextStyleHelper.mediumStyle(
-                            color: primaryTextColor),
-                      ));
-                }).toList(),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 300,
-                decoration: BoxDecoration(
-                    // color: secondaryBackground,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10))),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ProfileTileWidget(
-                        icons: Icons.chat,
-                        subtitle: "Check you chat History",
-                        title: "Chat",
-                      ),
-                      ProfileTileWidget(
-                        icons: Icons.archive,
-                        subtitle: "Find your archived chats",
-                        title: "Archived",
-                      ),
-                      ProfileTileWidget(
-                        icons: Icons.person,
-                        subtitle: "Change your profile",
-                        title: "My Profile",
-                      ),
-                      ProfileTileWidget(
-                        icons: Icons.person,
-                        subtitle: "Password and Security",
-                        title: "Settings",
-                      ),
-                      InkWell(
-                        onTap: () {
-                          sharedPrefs.logout();
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            AppRoutes.login,
-                            (route) => false,
-                          );
-                        },
-                        child: ProfileTileWidget(
-                          icons: Icons.person,
-                          subtitle: "logout from Application",
-                          title: "Logout",
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: MediaQuery.sizeOf(context).height * 0.44,
+                  decoration: BoxDecoration(
+                      // color: secondaryBackground,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10))),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ProfileTileWidget(
+                          icons: Icons.chat,
+                          subtitle: "Check you chat History",
+                          title: "Chat",
                         ),
-                      ),
-                      SizedBox(
-                        height: 100,
-                      )
-                    ],
+                        ProfileTileWidget(
+                          icons: Icons.archive,
+                          subtitle: "Find your archived chats",
+                          title: "Archived",
+                        ),
+                        ProfileTileWidget(
+                          icons: Icons.person,
+                          subtitle: "Change your profile",
+                          title: "My Profile",
+                        ),
+                        ProfileTileWidget(
+                          icons: Icons.person,
+                          subtitle: "Password and Security",
+                          title: "Settings",
+                        ),
+                        InkWell(
+                          onTap: () {
+                            sharedPrefs.logout();
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              AppRoutes.login,
+                              (route) => false,
+                            );
+                          },
+                          child: ProfileTileWidget(
+                            icons: Icons.person,
+                            subtitle: "logout from Application",
+                            title: "Logout",
+                          ),
+                        ),
+                        SizedBox(
+                          height: 100,
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              )
-            ],
-          );
-        } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
+                )
+              ],
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
     );
   }
 }
@@ -271,18 +294,24 @@ class _CallTitleWidgetState extends State<ProfileTitleWidget> {
     return Container(
       width: MediaQuery.sizeOf(context).width,
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.only(top: 20.0, left: 8, right: 8),
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back_ios)),
                 Text(
                   "Profile",
                   style: TextStyleHelper.boldStyle(
                           color: primaryTextColor, fontSize: 30)
                       .copyWith(letterSpacing: -1),
                 ),
+                Spacer(),
                 IconButton(
                     onPressed: () {
                       sharedPrefs.logout();

@@ -11,14 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
-class SearchTitleWidget extends StatefulWidget {
+class SearchTitleWidget extends StatelessWidget {
   const SearchTitleWidget({super.key});
 
-  @override
-  State<SearchTitleWidget> createState() => _CallTitleWidgetState();
-}
-
-class _CallTitleWidgetState extends State<SearchTitleWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -239,51 +239,93 @@ class ChatTile extends StatelessWidget {
   }
 }
 
-class WelcomeBackWidget extends StatelessWidget {
-  const WelcomeBackWidget({
+class ChatHeaderWidget extends StatelessWidget {
+  const ChatHeaderWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.sizeOf(context).width,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20.0, right: 20, top: 20),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Chat Page",
+                  style: TextStyleHelper.boldStyle(
+                          color: primaryTextColor, fontSize: 30)
+                      .copyWith(letterSpacing: -1),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ChatSearchWidget extends StatelessWidget {
+  ChatSearchWidget({
     super.key,
   });
+
+  final TextEditingController chatbox = TextEditingController();
+  ValueNotifier<bool> isEmpty = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20),
-      child: Row(
-        children: [
-          Text(
-            "Welcome ",
-            style: TextStyleHelper.lightStyle(
-                    color: primaryTextColor, fontSize: 20)
-                .copyWith(letterSpacing: -1),
-          ),
-          SizedBox(
-            width: 2,
-          ),
-          Text(
-            "Back,",
-            style: TextStyleHelper.lightStyle(
-                    color: primaryTextColor, fontSize: 20)
-                .copyWith(letterSpacing: -2),
-          ),
-          SizedBox(
-            width: 5,
-          ),
-          Text(
-            "${sharedPrefs.getname}",
-            style:
-                TextStyleHelper.boldStyle(fontSize: 20, color: primaryTextColor)
-                    .copyWith(letterSpacing: -2),
-          ),
-          SizedBox(
-            width: 2,
-          ),
-          Text(
-            "",
-            style:
-                TextStyleHelper.boldStyle(fontSize: 20, color: primaryTextColor)
-                    .copyWith(letterSpacing: -2),
-          ),
-        ],
+      padding: const EdgeInsets.only(top: 20.0, bottom: 10),
+      child: Container(
+        width: MediaQuery.sizeOf(context).width,
+        height: 64,
+        decoration: BoxDecoration(
+            color: secondaryBackground,
+            border: Border.all(color: bordercolor.withOpacity(0.25), width: 2),
+            borderRadius: BorderRadius.circular(167)),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 10,
+            ),
+            Container(
+              width: 39,
+              height: 39,
+              decoration: BoxDecoration(
+                  color: yellowprimary,
+                  borderRadius: BorderRadius.circular(30)),
+              child: Icon(
+                Icons.search,
+                weight: 50,
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Expanded(
+                child: TextFormField(
+                    controller: chatbox,
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        isEmpty.value = true;
+                      } else {
+                        isEmpty.value = false;
+                      }
+                    },
+                    maxLines: 1,
+                    decoration: InputDecoration(
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        border: InputBorder.none,
+                        hintText: "Search here",
+                        hintStyle:
+                            TextStyleHelper.regularStyle(fontSize: 14)))),
+          ],
+        ),
       ),
     );
   }

@@ -11,6 +11,7 @@ class Data {
   String? token;
   String? name;
   String? id;
+  String? userPhoto;
 
-  Data({this.token, this.id, this.name});
+  Data({this.token, this.id, this.name, this.userPhoto});
 }

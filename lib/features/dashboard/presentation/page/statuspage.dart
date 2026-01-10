@@ -3,9 +3,13 @@ import 'package:beep/features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'package:beep/features/dashboard/presentation/data.dart';
 import 'package:beep/utils/constants/color_constants.dart';
 import 'package:beep/utils/constants/text_constants.dart';
+import 'package:beep/utils/helpers/bottomsheethelper.dart';
+import 'package:beep/utils/router/arguments/camera_page_argument.dart';
 import 'package:beep/utils/router/arguments/status_preview_argument.dart';
+import 'package:beep/utils/router/arguments/status_upload_page_arg.dart';
 import 'package:beep/utils/router/router.dart';
 import 'package:beep/utils/theme/text_theme.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -241,7 +245,7 @@ class _CallTitleWidgetState extends State<CallTitleWidget> {
                 ),
                 IconButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      // Navigator.pop(context);
                     },
                     icon: Icon(
                       Icons.more_vert,
@@ -308,13 +312,16 @@ class _CallTitleWidgetState extends State<CallTitleWidget> {
                                 SizedBox(
                                   height: 6,
                                 ),
-                                Text(
-                                  state.selfStatus == null
-                                      ? "Create Status"
-                                      : DateFormat('dd MMM, hh:mm a')
-                                          .format(state.selfStatus!.timestamp!),
-                                  style: TextStyleHelper.mediumStyle(
-                                      color: yellowprimary, fontSize: 15),
+                                InkWell(
+                                  // onTap: () => showAddOptions(context),
+                                  child: Text(
+                                    state.selfStatus == null
+                                        ? "Create Status"
+                                        : DateFormat('dd MMM, hh:mm a').format(
+                                            state.selfStatus!.timestamp!),
+                                    style: TextStyleHelper.mediumStyle(
+                                        color: yellowprimary, fontSize: 15),
+                                  ),
                                 )
                               ],
                             )
@@ -336,5 +343,66 @@ class _CallTitleWidgetState extends State<CallTitleWidget> {
         ),
       ),
     );
+  }
+}
+
+class StatusOption extends StatelessWidget {
+  const StatusOption({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: const BoxDecoration(
+          color: secondaryBackground,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(
+                Icons.image,
+                color: secondaryTextColor,
+              ),
+              title: Text(
+                "Image",
+                style: TextStyleHelper.mediumStyle(color: secondaryTextColor),
+              ),
+              onTap: () async {
+                final cameras = await availableCameras();
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.cameraScreen,
+                  arguments: CameraPageArgument(
+                    cameras: cameras,
+                    fromchatScreen: true,
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.text_fields,
+                color: secondaryTextColor,
+              ),
+              title: Text(
+                "Text",
+                style: TextStyleHelper.mediumStyle(color: secondaryTextColor),
+              ),
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.statusuploadpage,
+                  arguments: StatusUploadPageArg(),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+    ;
   }
 }

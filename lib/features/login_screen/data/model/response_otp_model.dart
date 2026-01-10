@@ -26,8 +26,9 @@ class DataModel extends Data {
   String? token;
   String? name;
   String? id;
+  String? userPhoto;
 
-  DataModel({this.token, this.id, this.name});
+  DataModel({this.token, this.id, this.name, this.userPhoto});
 
   factory DataModel.fromRawJson(String str) =>
       DataModel.fromJson(json.decode(str));
@@ -35,10 +36,10 @@ class DataModel extends Data {
   String toRawJson() => json.encode(toJson());
 
   factory DataModel.fromJson(Map<String, dynamic> json) => DataModel(
-        token: json["token"],
-        name: json["name"],
-        id: json["id"],
-      );
+      token: json["token"],
+      name: json["name"],
+      id: json["id"],
+      userPhoto: json['userPhoto']);
 
   Map<String, dynamic> toJson() => {
         "token": token,

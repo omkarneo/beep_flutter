@@ -6,6 +6,7 @@ import 'package:beep/features/chat_screen/presentation/bloc/chat_send_bloc.dart'
 import 'package:beep/features/chat_screen/presentation/chat_list_bloc/chat_room_bloc.dart';
 import 'package:beep/features/chat_screen/presentation/status_bloc/status_bloc.dart';
 import 'package:beep/features/dashboard/domain/usecase/create_room_usecase.dart';
+import 'package:beep/features/dashboard/domain/usecase/get_post_usecase.dart';
 import 'package:beep/features/dashboard/domain/usecase/getroom_usecase.dart';
 import 'package:beep/features/dashboard/domain/usecase/getuser_usecase.dart';
 import 'package:beep/features/dashboard/domain/usecase/profile_usecase.dart';
@@ -166,6 +167,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         ),
         BlocProvider(
           create: (context) => DashboardBloc(
+              getPostUsecase: locator<GetPostUsecase>(),
               statusGetUsecase: locator<StatusGetUsecase>(),
               createRoomUsecase: locator<CreateRoomUsecase>(),
               getProfileData: locator<GetProfileData>(),
@@ -196,7 +198,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         designSize: const Size(375, 667),
         minTextAdapt: true,
         builder: (context, child) => MaterialApp(
-          themeMode: ThemeMode.system,
+          themeMode: ThemeMode.dark,
           navigatorKey: AppRouter.navigatorKey,
           debugShowCheckedModeBanner: false,
           title: "Beep",

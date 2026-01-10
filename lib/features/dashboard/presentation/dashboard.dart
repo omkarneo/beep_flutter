@@ -1,3 +1,6 @@
+import 'package:beep/features/dashboard/presentation/page/postPage.dart';
+import 'package:beep/features/dashboard/presentation/widget/postCreateWidget.dart';
+import 'package:beep/utils/helpers/bottomsheethelper.dart';
 import 'package:camera/camera.dart';
 import 'package:beep/features/dashboard/presentation/data.dart';
 import 'package:beep/features/dashboard/presentation/page/statuspage.dart';
@@ -358,7 +361,7 @@ class TabCalculator {
   }
 }
 
-enum DashboardTab { chat, search, status, profile }
+enum DashboardTab { post, chat, search, status, notification }
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key, required this.lastindex});
@@ -388,6 +391,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
             bottom: false,
             child: _buildBody(context, currentTab),
           ),
+          floatingActionButton: currentTab != 2
+              ? currentTab != 4
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 60),
+                      child: FloatingActionButton(
+                        backgroundColor: yellowprimary,
+                        foregroundColor: primaryTextColor,
+                        onPressed: () {
+                          if (currentTab == 3) {
+                            bottomSheetContent(context, StatusOption());
+                          } else if (currentTab == 0) {
+                            bottomSheetContent(context, MediaPickerScreen());
+                          }
+                          print('FAB clicked');
+                        },
+                        child: const Icon(Icons.add),
+                      ),
+                    )
+                  : null
+              : null,
           bottomSheet: BottomMenu(
             index: currentTab,
             tabController: tab,
@@ -406,7 +429,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             _buildHeader(tabIndex),
             _buildTopContent(tabIndex),
-            if (tabIndex != DashboardTab.profile.index)
+            if (tabIndex != DashboardTab.post.index)
               _buildBottomContainer(context, tabIndex),
           ],
         ),
@@ -417,13 +440,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildHeader(int tabIndex) {
     switch (DashboardTab.values[tabIndex]) {
       case DashboardTab.chat:
-        return const WelcomeBackWidget();
+        return ChatHeaderWidget();
       case DashboardTab.search:
         return const SearchTitleWidget();
       case DashboardTab.status:
         return const CallTitleWidget();
-      case DashboardTab.profile:
-        return const ProfileTitleWidget();
+      case DashboardTab.post:
+        return const WelcomeBackWidget();
+      case DashboardTab.notification:
+        return const Placeholder();
     }
   }
 
@@ -433,14 +458,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return IgnorePointer(
       ignoring: isDisabled,
       child: switch (DashboardTab.values[tabIndex]) {
-        DashboardTab.chat => StatusGridWidget(profile: profile),
+        DashboardTab.chat => ChatSearchWidget(),
         DashboardTab.search => Column(
             children: [
               SearchWidget(),
               SizedBox(height: 10),
             ],
           ),
-        DashboardTab.profile => const ProfilePhotoPage(),
+        DashboardTab.post => const Postpage(),
         _ => const SizedBox.shrink(),
       },
     );
@@ -475,7 +500,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       DashboardTab.chat => 242,
       DashboardTab.search => 211,
       DashboardTab.status => 137,
-      DashboardTab.profile => 147,
+      DashboardTab.post => 147,
+      DashboardTab.notification => 147,
     };
   }
 }
@@ -504,11 +530,12 @@ class BottomMenu extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _menuItem("assets/images/message.svg", "Message", 0),
-          _menuItem("assets/images/search.svg", "Search", 1),
-          _addButton(context),
-          _menuItem("assets/images/phone.svg", "Status", 2),
-          _menuItem("assets/images/profile.svg", "Profile", 3),
+          _menuItem("assets/images/home.svg", "", 0),
+          _menuItem("assets/images/send_message.svg", "", 1),
+          // _addButton(context),
+          _menuItem("assets/images/search.svg", "", 2),
+          _menuItem("assets/images/status.svg", "", 3),
+          _menuItem("assets/images/notification.svg", "", 4),
         ],
       ),
     );
@@ -523,8 +550,8 @@ class BottomMenu extends StatelessWidget {
         children: [
           SvgPicture.asset(
             icon,
-            width: 24,
-            height: 24,
+            width: 30.sp,
+            height: 30.sp,
             color: isActive ? primaryBackground : Colors.grey,
           ),
           Text(
@@ -538,7 +565,7 @@ class BottomMenu extends StatelessWidget {
 
   Widget _addButton(BuildContext context) {
     return InkWell(
-      onTap: () => _showAddOptions(context),
+      // onTap: () => _showAddOptions(context),
       child: Container(
         width: 39,
         height: 39,
@@ -551,55 +578,14 @@ class BottomMenu extends StatelessWidget {
     );
   }
 
-  void _showAddOptions(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (_) => _bottomSheetContent(context),
-    );
-  }
-
-  Widget _bottomSheetContent(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
-        color: secondaryBackground,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            leading: const Icon(Icons.image),
-            title: const Text("Image"),
-            onTap: () async {
-              final cameras = await availableCameras();
-              Navigator.pushNamed(
-                context,
-                AppRoutes.cameraScreen,
-                arguments: CameraPageArgument(
-                  cameras: cameras,
-                  fromchatScreen: true,
-                ),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.text_fields),
-            title: const Text("Text"),
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                AppRoutes.statusuploadpage,
-                arguments: StatusUploadPageArg(),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
+  // void _showAddOptions(BuildContext context) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     isScrollControlled: true,
+  //     shape: RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+  //     ),
+  //     builder: (_) => bottomSheetContent(context),
+  //   );
+  // }
 }

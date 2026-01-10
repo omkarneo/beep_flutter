@@ -53,7 +53,15 @@ class DashboardChatState extends DashboardState {
   final List<Status>? statusData;
   final List<RoomData>? roomData;
 
-  DashboardChatState({required this.roomData, this.statusData});
+  const DashboardChatState({required this.roomData, this.statusData});
   @override
   List<Object> get props => [roomData!];
+}
+
+class DashboardPostState extends DashboardState {
+  final List<PostEnity>? postData;
+
+  const DashboardPostState({required this.postData});
+  @override
+  List<Object> get props => [postData!];
 }

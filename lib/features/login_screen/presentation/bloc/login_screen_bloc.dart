@@ -38,6 +38,7 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
           sharedPrefs.setstatusKey("Online");
           sharedPrefs.setid(data.data?.id ?? "");
           sharedPrefs.setname(data.data?.name ?? "");
+          sharedPrefs.setuserPhoto(data.data?.userPhoto ?? "");
 
           emit(SuccessState(
               isexpired: data.message != null ? true : false,

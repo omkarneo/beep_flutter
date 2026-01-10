@@ -3,24 +3,28 @@ import 'package:beep/features/chat_screen/data/repo_lmpl/chat_data_repo_impl.dar
 import 'package:beep/features/chat_screen/domain/repo/chat_data_repo.dart';
 import 'package:beep/features/chat_screen/domain/usecase/chat_data_usecase.dart';
 import 'package:beep/features/dashboard/data/datasource/create_room_ds.dart';
+import 'package:beep/features/dashboard/data/datasource/get_post_ds.dart';
 import 'package:beep/features/dashboard/data/datasource/getroom_ds.dart';
 import 'package:beep/features/dashboard/data/datasource/profile_ds.dart';
 import 'package:beep/features/dashboard/data/datasource/search_ds.dart';
 import 'package:beep/features/dashboard/data/datasource/self_status_ds.dart';
 import 'package:beep/features/dashboard/data/datasource/status_ds.dart';
 import 'package:beep/features/dashboard/data/repo_implentation/create_repo_impl.dart';
+import 'package:beep/features/dashboard/data/repo_implentation/post_repo_impl.dart';
 import 'package:beep/features/dashboard/data/repo_implentation/profile_repo_impl.dart';
 import 'package:beep/features/dashboard/data/repo_implentation/room_repo_imple.dart';
 import 'package:beep/features/dashboard/data/repo_implentation/search_repo_impl.dart';
 import 'package:beep/features/dashboard/data/repo_implentation/self_status_repo_imple.dart';
 import 'package:beep/features/dashboard/data/repo_implentation/status_repo_imple.dart';
 import 'package:beep/features/dashboard/domain/repo/create_room_repo.dart';
+import 'package:beep/features/dashboard/domain/repo/post_repo.dart';
 import 'package:beep/features/dashboard/domain/repo/profile_repo.dart';
 import 'package:beep/features/dashboard/domain/repo/room_repo.dart';
 import 'package:beep/features/dashboard/domain/repo/search_repo.dart';
 import 'package:beep/features/dashboard/domain/repo/self_status_repo.dart';
 import 'package:beep/features/dashboard/domain/repo/status_repo.dart';
 import 'package:beep/features/dashboard/domain/usecase/create_room_usecase.dart';
+import 'package:beep/features/dashboard/domain/usecase/get_post_usecase.dart';
 import 'package:beep/features/dashboard/domain/usecase/getroom_usecase.dart';
 import 'package:beep/features/dashboard/domain/usecase/getuser_usecase.dart';
 import 'package:beep/features/dashboard/domain/usecase/profile_usecase.dart';
@@ -58,6 +62,9 @@ Future<void> initializeDependencies() async {
      :::::::::::::::: USE CASES :::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::
  */
+  locator.registerLazySingleton<GetPostUsecase>(
+    () => GetPostUsecase(postRepo: locator<PostRepo>()),
+  );
   locator.registerLazySingleton<StatusCreateUsecase>(
     () => StatusCreateUsecase(
         statusPhotoUpload: locator<StatusPhotoRepoUpload>()),
@@ -114,6 +121,8 @@ Future<void> initializeDependencies() async {
     :::::::::::::::  REPOSITORIES ::::::::::::::::::::::::
 :::::::::::::::::::::::::::::::::::::::::::::::::::::
  */
+  locator.registerLazySingleton<PostRepo>(
+      () => PostRepoImpl(getPostDataSource: locator<GetPostDataSource>()));
   locator.registerLazySingleton<StatusPhotoRepoUpload>(() =>
       StatusUploadRepoImpl(uploadStatusSource: locator<UploadStatusSource>()));
   locator.registerLazySingleton<SelfStatusRepo>(
@@ -148,6 +157,9 @@ Future<void> initializeDependencies() async {
     :::::::::::::::  DATA SOURCE ::::::::::::::::::::::::
 :::::::::::::::::::::::::::::::::::::::::::::::::::::
 */
+  locator.registerLazySingleton<GetPostDataSource>(
+    () => GetPostDataSource(),
+  );
   locator.registerLazySingleton<UploadStatusSource>(
     () => UploadStatusSource(),
   );

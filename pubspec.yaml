@@ -29,6 +29,9 @@ dependencies:
   firebase_core: ^3.13.0
   firebase_messaging: ^15.2.5
   awesome_notifications: ^0.10.1
+  carousel_slider: ^5.1.1
+  photo_manager: ^3.8.3
+  photo_manager_image_provider: ^2.2.0
 
 dev_dependencies:
   flutter_test:

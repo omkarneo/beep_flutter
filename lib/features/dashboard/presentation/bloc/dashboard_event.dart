@@ -13,6 +13,8 @@ class DashboardSearchEvent extends DashboardEvent {}
 
 class DashboardProfileEvent extends DashboardEvent {}
 
+class DashboardPostEvent extends DashboardEvent {}
+
 class DashboardChatEvent extends DashboardEvent {}
 
 class DashboardCreateRoomEvent extends DashboardEvent {

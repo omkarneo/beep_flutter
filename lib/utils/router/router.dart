@@ -1,3 +1,4 @@
+import 'package:beep/features/dashboard/presentation/page/profilepage.dart';
 import 'package:camera/camera.dart';
 import 'package:beep/features/camera/presentation/camera_page.dart';
 import 'package:beep/features/dashboard/presentation/dashboard.dart';
@@ -26,6 +27,7 @@ class AppRoutes {
   static const cameraScreen = "/cameraScreen";
   static const statusuploadpage = "/statusuploadpage";
   static const notificationPage = "/notificationPage";
+  static const profilePage = "/profilePage";
 }
 
 class AppRouter {
@@ -103,6 +105,11 @@ class AppRouter {
           builder: (_) => StatusUploadPage(
             image: args.image,
           ),
+          settings: settings,
+        );
+      case AppRoutes.profilePage:
+        return MaterialPageRoute<dynamic>(
+          builder: (_) => ProfilePage(),
           settings: settings,
         );
       default:

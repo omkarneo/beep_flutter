@@ -21,3 +21,4 @@ const chatUploadUrl = "/upload/chats";
 const createstatusUrl = "/status/create";
 
 const loginUrl = "/auth/login";
+const getpostUrl = "/post";

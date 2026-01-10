@@ -1,5 +1,7 @@
 import 'dart:isolate';
 
+import 'package:beep/features/dashboard/domain/entity/post_response_entity.dart';
+import 'package:beep/features/dashboard/domain/usecase/get_post_usecase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:beep/features/dashboard/data/model/room_model.dart';
 import 'package:beep/features/dashboard/data/model/search_model.dart';
@@ -24,6 +26,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final CreateRoomUsecase createRoomUsecase;
   final StatusGetUsecase statusGetUsecase;
   final SelfStatusUsecase selfStatusUsecase;
+  final GetPostUsecase getPostUsecase;
 
   DashboardBloc(
       {required this.getProfileData,
@@ -31,7 +34,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       required this.getUserData,
       required this.createRoomUsecase,
       required this.statusGetUsecase,
-      required this.selfStatusUsecase})
+      required this.selfStatusUsecase,
+      required this.getPostUsecase})
       : super(DashboardInitial()) {
     on<DashboardProfileEvent>((event, emit) async {
       try {
@@ -39,6 +43,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         emit(DashboardProfileState(profileResponseEntity: response));
       } catch (err) {}
     });
+    on<DashboardPostEvent>(
+      (event, emit) async {
+        var response = await getPostUsecase.call(params: "");
+        emit(DashboardPostState(postData: response.data));
+      },
+    );
     on<DashboardCallEvent>(
       (event, emit) async {
         try {
